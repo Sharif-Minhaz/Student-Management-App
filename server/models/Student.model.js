@@ -7,7 +7,7 @@ const studentSchema = new Schema({
 	},
 	profile: {
 		type: Schema.Types.ObjectId,
-		ref: "Profile",
+		ref: "StudentProfile",
 	},
 	courses: [
 		{
@@ -15,7 +15,7 @@ const studentSchema = new Schema({
 			ref: "Course",
 		},
 	],
-	email: {
+	studentId: {
 		type: String,
 		required: true,
 	},
