@@ -1,13 +1,13 @@
 const { Schema, model } = require("mongoose");
 
-const studentSchema = new Schema({
+const userSchema = new Schema({
 	primaryName: {
 		type: String,
 		required: true,
 	},
 	profile: {
 		type: Schema.Types.ObjectId,
-		ref: "StudentProfile",
+		ref: "Profile",
 	},
 	courses: [
 		{
@@ -15,7 +15,7 @@ const studentSchema = new Schema({
 			ref: "Course",
 		},
 	],
-	studentId: {
+	userId: {
 		type: String,
 		required: true,
 	},
@@ -25,6 +25,6 @@ const studentSchema = new Schema({
 	},
 });
 
-const Student = model("student", studentSchema);
+const User = model("user", userSchema);
 
-module.exports = Student;
+module.exports = User;
