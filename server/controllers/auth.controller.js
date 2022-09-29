@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
+const { verifyUser } = require("../middlewares/verifyUser");
 
 exports.loginController = async (req, res, next) => {
 	const { userId, password } = req.body;
@@ -65,4 +66,14 @@ exports.signupController = async (req, res, next) => {
 	} catch (err) {
 		next(err);
 	}
+};
+
+exports.logoutController = (req, res, next) => {
+	const isLoggedIn = verifyUser(req, res, next);
+	console.log(isLoggedIn);
+	if (isLoggedIn) {
+		res.clearCookie("auth");
+		return res.status(200).json({ message: "Logout successful" });
+	}
+	res.status(200).json({ message: "Unauthorized" });
 };
