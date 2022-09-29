@@ -3,16 +3,16 @@ const { Schema, model } = require("mongoose");
 const userSchema = new Schema({
 	primaryName: {
 		type: String,
-		required: true,
+		required: [true, "Primary name is required"],
 	},
 	profile: {
 		type: Schema.Types.ObjectId,
-		ref: "Profile",
+		ref: "profile",
 	},
 	courses: [
 		{
 			type: Schema.Types.ObjectId,
-			ref: "Course",
+			ref: "course",
 		},
 	],
 	userId: {

@@ -1,5 +1,6 @@
 const homeRoute = require("./home.route");
 const authRoute = require("./auth.route");
+const profileRoute = require("./profile.route");
 
 const routers = [
 	{
@@ -9,6 +10,10 @@ const routers = [
 	{
 		path: "/auth",
 		handler: authRoute,
+	},
+	{
+		path: "/profile",
+		handler: profileRoute,
 	},
 ];
 

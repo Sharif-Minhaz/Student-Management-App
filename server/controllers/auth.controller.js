@@ -12,7 +12,7 @@ exports.loginController = async (req, res, next) => {
 			const match = await bcrypt.compare(password, userData.password);
 			if (match) {
 				const token = jwt.sign(
-					{ user: { userId, primaryName: userData.primaryName } },
+					{ user: { id: userData._id, userId, primaryName: userData.primaryName } },
 					process.env.SECRET_KEY,
 					{
 						expiresIn: "1h",
@@ -29,9 +29,11 @@ exports.loginController = async (req, res, next) => {
 				success: true,
 				message: "Login successful",
 				userData: {
+					id: userData._id,
 					primaryName: userData.primaryName,
 					userId: userData.userId,
 					courses: userData.courses,
+					profile: userData.profile,
 				},
 			});
 		} else {
@@ -45,7 +47,7 @@ exports.loginController = async (req, res, next) => {
 exports.signupController = async (req, res, next) => {
 	const { primaryName, userId, password } = req.body;
 	try {
-		const isFound = await User.findOne({ userId });
+		const isFound = await User.exists({ userId });
 		if (isFound)
 			return res.status(200).json({ success: false, message: "User Id already in use." });
 
@@ -56,6 +58,8 @@ exports.signupController = async (req, res, next) => {
 			userId,
 			password: hashedPassword,
 		});
+		const err = newUser.validateSync();
+		console.log(err?.errors?.["primaryName"]);
 		await newUser.save();
 
 		res.status(201).json({
@@ -70,7 +74,6 @@ exports.signupController = async (req, res, next) => {
 
 exports.logoutController = (req, res, next) => {
 	const isLoggedIn = verifyUser(req, res, next);
-	console.log(isLoggedIn);
 	if (isLoggedIn) {
 		res.clearCookie("auth");
 		return res.status(200).json({ message: "Logout successful" });

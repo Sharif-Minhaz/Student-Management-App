@@ -7,16 +7,22 @@ const profileSchema = new Schema({
 	},
 	email: {
 		type: String,
+		lowercase: true,
 		required: true,
 	},
 	userId: String,
 	profilePicture: {
 		type: String,
+		default:
+			"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png",
 	},
 	presentAddress: String,
 	currentAddress: String,
 	localGuardianName: String,
-	localGuardianEmail: String,
+	localGuardianEmail: {
+		type: String,
+		lowercase: true,
+	},
 	localGuardianMobile: String,
 });
 
