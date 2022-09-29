@@ -45,7 +45,7 @@ exports.loginController = async (req, res, next) => {
 };
 
 exports.signupController = async (req, res, next) => {
-	const { primaryName, userId, password } = req.body;
+	const { primaryName, userId, password, role } = req.body;
 	try {
 		const isFound = await User.exists({ userId });
 		if (isFound)
@@ -55,6 +55,7 @@ exports.signupController = async (req, res, next) => {
 
 		const newUser = new User({
 			primaryName,
+			role,
 			userId,
 			password: hashedPassword,
 		});
@@ -65,7 +66,7 @@ exports.signupController = async (req, res, next) => {
 		res.status(201).json({
 			success: true,
 			message: "Signup successful",
-			userData: { primaryName, userId },
+			userData: { primaryName, userId, role },
 		});
 	} catch (err) {
 		next(err);
