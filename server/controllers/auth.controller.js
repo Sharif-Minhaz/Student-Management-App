@@ -61,6 +61,10 @@ exports.signupController = async (req, res, next) => {
 		});
 		const err = newUser.validateSync();
 		console.log(err?.errors?.["primaryName"]);
+		if (role === "teacher") {
+			delete newUser.courses;
+			console.log(newUser);
+		}
 		await newUser.save();
 
 		res.status(201).json({
