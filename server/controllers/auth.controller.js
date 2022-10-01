@@ -7,7 +7,7 @@ exports.loginController = async (req, res, next) => {
 	const { userId, password } = req.body;
 
 	try {
-		const userData = await User.findOne({ userId });
+		const userData = await User.findOne({ userId }).select("+password _id userId primaryName profile");
 		if (userData) {
 			const match = await bcrypt.compare(password, userData.password);
 			if (match) {
@@ -22,23 +22,16 @@ exports.loginController = async (req, res, next) => {
 					httpOnly: true,
 					expires: new Date(Date.now() + 3600000),
 				});
-			} else {
-				return res.status(404).json({ success: false, message: "Wrong credentials." });
+				const { password, ...restData } = userData._doc;
+				return res.status(200).json({
+					success: true,
+					message: "Login successful",
+					userData: restData,
+				});
 			}
-			res.status(200).json({
-				success: true,
-				message: "Login successful",
-				userData: {
-					id: userData._id,
-					primaryName: userData.primaryName,
-					userId: userData.userId,
-					courses: userData.courses,
-					profile: userData.profile,
-				},
-			});
-		} else {
-			res.status(404).json({ success: false, message: "Wrong credentials." });
+			return res.status(404).json({ success: false, message: "Wrong credentials." });
 		}
+		res.status(404).json({ success: false, message: "Wrong credentials." });
 	} catch (err) {
 		next(err);
 	}
@@ -61,10 +54,6 @@ exports.signupController = async (req, res, next) => {
 		});
 		const err = newUser.validateSync();
 		console.log(err?.errors?.["primaryName"]);
-		if (role === "teacher") {
-			delete newUser.courses;
-			console.log(newUser);
-		}
 		await newUser.save();
 
 		res.status(201).json({

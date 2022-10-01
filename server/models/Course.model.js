@@ -1,6 +1,9 @@
 const { model, Schema } = require("mongoose");
 
 const courseSchema = new Schema({
+	courseCode: {
+		type: String,
+	},
 	courseName: {
 		type: String,
 		required: true,
@@ -8,6 +11,9 @@ const courseSchema = new Schema({
 	courseTeacher: {
 		type: String,
 		required: true,
+	},
+	credit: {
+		type: Number,
 	},
 	examNumber: {
 		type: Number,
