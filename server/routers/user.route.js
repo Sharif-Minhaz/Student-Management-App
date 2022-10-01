@@ -6,7 +6,7 @@ const {
 } = require("../controllers/user.controller");
 
 router.get("/all", getAllStudentController);
-router.delete("/delete/:id", deleteStudentController);
 router.get("/find/:userId", getSingleStudentController);
+router.delete("/delete/:id", deleteStudentController);
 
 module.exports = router;
