@@ -3,7 +3,7 @@ import { AppBar, Box, Toolbar, Typography, Button, IconButton } from "@mui/mater
 import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 
-const Navbar = () => {
+const Navbar = ({ setOpenDrawer }) => {
 	const navigate = useNavigate();
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -15,6 +15,7 @@ const Navbar = () => {
 						color="inherit"
 						aria-label="menu"
 						sx={{ mr: 2 }}
+						onClick={() => setOpenDrawer(true)}
 					>
 						<MenuIcon />
 					</IconButton>

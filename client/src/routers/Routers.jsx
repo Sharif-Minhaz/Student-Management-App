@@ -14,11 +14,12 @@ import RegisteredCourse from "../pages/registeredCourse/RegisteredCourse";
 import RegisteredStudent from "../pages/registeredStudent/RegisteredStudent";
 import Result from "../pages/result/Result";
 import Report from "../pages/report/Report";
+import ChangePassword from "../pages/auth/ChangePassword";
 
 const Routers = () => {
 	return (
 		<Routes>
-			<Route path="/" element={<Home />} title="hello" />
+			<Route path="/" element={<Home />} />
 			<Route path="/dashboard" element={<Dashboard />} />
 			<Route path="/login" element={<Login />} />
 			<Route path="/signup" element={<Signup />} />
@@ -32,6 +33,7 @@ const Routers = () => {
 			<Route path="/registered-student" element={<RegisteredStudent />} />
 			<Route path="/result" element={<Result />} />
 			<Route path="/report" element={<Report />} />
+			<Route path="/password/change" element={<ChangePassword />} />
 			<Route path="*" element={<ErrorPage />} />
 		</Routes>
 	);
