@@ -7,12 +7,21 @@ exports.loginController = async (req, res, next) => {
 	const { userId, password } = req.body;
 
 	try {
-		const userData = await User.findOne({ userId }).select("+password _id userId primaryName profile");
+		const userData = await User.findOne({ userId }).select(
+			"+password _id userId primaryName profile role"
+		);
 		if (userData) {
 			const match = await bcrypt.compare(password, userData.password);
 			if (match) {
 				const token = jwt.sign(
-					{ user: { id: userData._id, userId, primaryName: userData.primaryName } },
+					{
+						user: {
+							id: userData._id,
+							userId,
+							primaryName: userData.primaryName,
+							role: userData.role,
+						},
+					},
 					process.env.SECRET_KEY,
 					{
 						expiresIn: "1h",
@@ -54,6 +63,7 @@ exports.signupController = async (req, res, next) => {
 		});
 		const err = newUser.validateSync();
 		console.log(err?.errors?.["primaryName"]);
+		// TODO: learn to maintain the error handling behavior
 		await newUser.save();
 
 		res.status(201).json({

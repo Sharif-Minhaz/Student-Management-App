@@ -1,6 +1,8 @@
 const AllCourses = require("../models/AllCourses.model");
 const Course = require("../models/Course.model");
 const User = require("../models/User.model");
+const { loggedInUserRole } = require("../middlewares/loggedInUserRole");
+const { currentUserId } = require("../middlewares/currentUserId");
 
 exports.getAllCoursesController = async (req, res, next) => {
 	try {
@@ -48,10 +50,10 @@ exports.assignCourseToStudentController = async (req, res, next) => {
 			await AllCourses.findById(id);
 
 		const { courses } = await User.findOne({ userId }).populate("courses");
+		// Identifying if the course is already assigned
 		for (let i = 0; i < courses.length; i++) {
-			if (courses[i].courseCode === courseCode) {
+			if (courses[i].courseCode === courseCode)
 				return res.status(200).json({ message: "Course already being added" });
-			}
 		}
 
 		const courseEntry = new Course({
@@ -87,4 +89,33 @@ exports.removeCourseOfStudentController = async (req, res, next) => {
 	} catch (err) {
 		next(err);
 	}
+};
+
+exports.entryMarkController = async (req, res, next) => {
+	const mark = Number(req.body.mark);
+	const { courseId } = req.body;
+	const userType = loggedInUserRole(req, res, next);
+
+	if (userType !== "teacher") return res.status(403).json({ message: "Unauthorized" });
+
+	try {
+		const entryMarkInfo = await Course.findByIdAndUpdate(
+			courseId,
+			{ examNumber: mark },
+			{ new: true }
+		);
+		res.status(200).json({ message: "Number entry done.", entryMarkInfo });
+	} catch (err) {
+		next(err);
+	}
+};
+
+exports.viewAssignCourseController = async (req, res, next) => {
+	const userType = loggedInUserRole(req, res, next);
+	const id = currentUserId(req, res, next);
+	if (id && userType === "student") {
+		const coursesData = await User.findOne({ _id: id }).populate("courses").select("courses");
+		return res.json(coursesData.courses);
+	}
+	res.status(200).json({ message: "Something went wrong!" });
 };
