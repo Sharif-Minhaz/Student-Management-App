@@ -18,7 +18,7 @@ import Report from "../pages/report/Report";
 const Routers = () => {
 	return (
 		<Routes>
-			<Route path="/" element={<Home />} />
+			<Route path="/" element={<Home />} title="hello" />
 			<Route path="/dashboard" element={<Dashboard />} />
 			<Route path="/login" element={<Login />} />
 			<Route path="/signup" element={<Signup />} />
