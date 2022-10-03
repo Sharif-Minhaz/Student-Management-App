@@ -32,15 +32,21 @@ const Lists = ({ setOpenDrawer }) => {
 				/>
 				<SingleListItem
 					setOpenDrawer={setOpenDrawer}
+					text="Profile"
+					icon={<AccountCircle />}
+					path="/profile/view"
+				/>
+				<SingleListItem
+					setOpenDrawer={setOpenDrawer}
 					text="Advising"
 					icon={<SupervisedUserCircle />}
 					path="/advising"
 				/>
 				<SingleListItem
 					setOpenDrawer={setOpenDrawer}
-					text="Available Course"
+					text="Available Courses"
 					icon={<AutoStories />}
-					path="/available-course"
+					path="/available-courses"
 				/>
 				<SingleListItem
 					setOpenDrawer={setOpenDrawer}
@@ -50,21 +56,15 @@ const Lists = ({ setOpenDrawer }) => {
 				/>
 				<SingleListItem
 					setOpenDrawer={setOpenDrawer}
-					text="Profile"
-					icon={<AccountCircle />}
-					path="/profile/view"
-				/>
-				<SingleListItem
-					setOpenDrawer={setOpenDrawer}
-					text="Registered Course"
+					text="Registered Courses"
 					icon={<AppRegistration />}
-					path="/registered-course"
+					path="/registered-courses"
 				/>
 				<SingleListItem
 					setOpenDrawer={setOpenDrawer}
-					text="Registered Student"
+					text="Registered Students"
 					icon={<HowToReg />}
-					path="/registered-student"
+					path="/registered-students"
 				/>
 				<SingleListItem
 					setOpenDrawer={setOpenDrawer}

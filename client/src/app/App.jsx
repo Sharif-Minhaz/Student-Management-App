@@ -13,7 +13,9 @@ const App = () => {
 		<div>
 			<Navbar setOpenDrawer={setOpenDrawer} />
 			<SidePanel openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
-			<Routers />
+			<div className="main-content">
+				<Routers />
+			</div>
 			<Footer />
 			<ToastContainer autoClose={4000} />
 		</div>

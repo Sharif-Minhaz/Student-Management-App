@@ -1,5 +1,5 @@
 const AvailableCourse = () => {
-	document.title = "Student Management | Available-Course";
+	document.title = "Student Management | Available-Courses";
 	return <div>AvailableCourse</div>;
 };
 

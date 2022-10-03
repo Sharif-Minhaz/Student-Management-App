@@ -1,5 +1,6 @@
+import "./registeredStudent.css";
 const RegisteredStudent = () => {
-	document.title = "Student Management | Registered-Student";
+	document.title = "Student Management | Registered-Students";
 	return <div>RegisteredStudent</div>;
 };
 

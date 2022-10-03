@@ -1,9 +1,9 @@
 .single-list-item:active {
-    color: #1976d2;
+	color: #1976d2;
 }
 .MuiTypography-root {
-    color: black;
+	color: black;
 }
 .single-list-item.active .MuiListItem-root {
-    background-color: #d6eeff;
+	background-image: linear-gradient(45deg, #d6eeffed, #3498db);
 }

@@ -2,12 +2,12 @@ import "./footer.css";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
 const Footer = () => (
-	<AppBar position="static" elevation={0} component="footer" color="default">
+	<AppBar className="footer-section" position="static" elevation={0} component="footer" color="default">
 		<Toolbar style={{ justifyContent: "center" }}>
-			<Typography variant="caption" fontSize={14}>
+			<Typography variant="caption" fontSize={14} textAlign="center">
 				@ 2021-2022{" "}
 				<a target="_blank" rel="noreferrer" href="https://github.com/MERN-Coders">
-					MERN-Coder
+					MERN-Coders
 				</a>{" "}
 				| All Rights Reserved
 			</Typography>
