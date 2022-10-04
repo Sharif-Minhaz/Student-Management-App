@@ -4,6 +4,7 @@ const userSchema = new Schema({
 	primaryName: {
 		type: String,
 		required: [true, "Primary name is required"],
+		trim: true
 	},
 	profile: {
 		type: Schema.Types.ObjectId,
@@ -18,6 +19,7 @@ const userSchema = new Schema({
 	userId: {
 		type: String,
 		required: true,
+		trim: true
 	},
 	password: {
 		type: String,

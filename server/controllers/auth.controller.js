@@ -48,21 +48,22 @@ exports.loginController = async (req, res, next) => {
 
 exports.signupController = async (req, res, next) => {
 	const { primaryName, userId, password } = req.body;
+	const role = /^[0-9]+$/.test(userId) ? "teacher" : "student";
 	try {
 		const isFound = await User.exists({ userId });
 		if (isFound)
 			return res.status(200).json({ success: false, message: "User Id already in use." });
 
 		const hashedPassword = await bcrypt.hash(password, 10);
-
+		
 		const newUser = new User({
 			primaryName,
 			role,
 			userId,
 			password: hashedPassword,
 		});
-		const err = newUser.validateSync();
-		console.log(err?.errors?.["primaryName"]);
+		// const err = newUser.validateSync();
+		// console.log(err?.errors?.["primaryName"]);
 		// TODO: learn to maintain the error handling behavior
 		await newUser.save();
 

@@ -1,4 +1,5 @@
 import "./auth.css";
+import { useState, useEffect } from "react";
 import {
 	Avatar,
 	Button,
@@ -11,12 +12,39 @@ import {
 	Stack,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../services/authSlice";
+import { toast } from "react-toastify";
+
+const defaultValue = { userId: "", password: "" };
 
 const Login = () => {
 	document.title = "Student Management | Login";
+	const [login, responseInfo] = useLoginMutation();
+	const [loginData, setLoginData] = useState(defaultValue);
+	const navigate = useNavigate();
 
-	const handleLoginSubmit = () => {};
+	useEffect(() => {
+		if (responseInfo.isSuccess && responseInfo.data?.success) {
+			setLoginData(defaultValue);
+			toast.success(responseInfo.data?.message);
+			navigate("/dashboard");
+		} else if (responseInfo.isError) {
+			toast.error("Something went wrong!");
+		}
+	}, [responseInfo, navigate]);
+
+	const handleLoginSubmit = async (e) => {
+		e.preventDefault();
+		await login(loginData);
+	};
+
+	const handleOnchange = (e) => {
+		setLoginData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+	};
+
+	if (responseInfo.isLoading) return <div>Loading....</div>;
+	if (responseInfo.isError) return <h1>An error occurred {responseInfo.error.error}</h1>;
 
 	return (
 		<Container component="div" maxWidth="xs" className="auth-base">
@@ -39,8 +67,10 @@ const Login = () => {
 								fullWidth
 								id="userId"
 								label="Student or Employee id"
-								name="text"
+								name="userId"
 								autoComplete="userId"
+								value={loginData.userId}
+								onChange={handleOnchange}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -53,6 +83,8 @@ const Login = () => {
 								type="password"
 								id="password"
 								autoComplete="current-password"
+								value={loginData.password}
+								onChange={handleOnchange}
 							/>
 						</Grid>
 						<Grid item sx={{ mb: 2 }}>

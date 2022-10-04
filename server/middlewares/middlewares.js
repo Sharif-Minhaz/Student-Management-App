@@ -3,7 +3,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const middlewares = [
-	cors(),
+	cors({ credentials: true, origin: "http://localhost:3000" }),
 	cookieParser(),
 	express.json(),
 	express.urlencoded({ extended: true }),

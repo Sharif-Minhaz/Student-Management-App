@@ -1,4 +1,5 @@
 import "./auth.css";
+import { useState, useEffect } from "react";
 import {
 	Avatar,
 	Button,
@@ -11,12 +12,40 @@ import {
 	Stack,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSignupMutation } from "../../services/authSlice";
+import { toast } from "react-toastify";
+
+const defaultValue = { primaryName: "", userId: "", password: "" };
 
 const Signup = () => {
 	document.title = "Student Management | Signup";
 
-	const handleSignupSubmit = () => {};
+	const [signup, responseInfo] = useSignupMutation();
+	const [signupData, setSignupData] = useState(defaultValue);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (responseInfo.isSuccess) {
+			setSignupData(defaultValue);
+			toast.success(responseInfo.data?.message);
+			navigate("/login");
+		} else if (responseInfo.isError) {
+			toast.error("Something went wrong!");
+		}
+	}, [responseInfo, navigate]);
+
+	const handleSignupSubmit = async (e) => {
+		e.preventDefault();
+		await signup(signupData);
+	};
+
+	const handleOnchange = (e) => {
+		setSignupData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+	};
+
+	if (responseInfo.isLoading) return <div>Loading....</div>;
+	if (responseInfo.isError) return <h1>An error occurred {responseInfo.error.error}</h1>;
 
 	return (
 		<Container component="div" maxWidth="xs" className="auth-base">
@@ -39,8 +68,10 @@ const Signup = () => {
 								fullWidth
 								id="primaryName"
 								label="Username"
-								name="text"
+								name="primaryName"
 								autoComplete="primaryName"
+								onChange={handleOnchange}
+								value={signupData.primaryName}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -50,8 +81,10 @@ const Signup = () => {
 								fullWidth
 								id="userId"
 								label="Student or Employee id"
-								name="text"
+								name="userId"
 								autoComplete="userId"
+								onChange={handleOnchange}
+								value={signupData.userId}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -64,6 +97,8 @@ const Signup = () => {
 								type="password"
 								id="password"
 								autoComplete="current-password"
+								onChange={handleOnchange}
+								value={signupData.password}
 							/>
 						</Grid>
 						<Grid item sx={{ mb: 2 }}>
