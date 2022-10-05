@@ -1,4 +1,5 @@
 import "./navbar.css";
+import brandImage from "../../assets/images/brand.png";
 import { AppBar, Box, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -7,7 +8,7 @@ const Navbar = ({ setOpenDrawer }) => {
 	const navigate = useNavigate();
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="sticky">
+			<AppBar position="fixed">
 				<Toolbar>
 					<IconButton
 						size="large"
@@ -25,7 +26,7 @@ const Navbar = ({ setOpenDrawer }) => {
 						sx={{ flexGrow: 1, userSelect: "none" }}
 					>
 						<NavLink className="brand" to="/">
-							STUDENT MANAGEMENT
+							<img src={brandImage} alt="brand" />
 						</NavLink>
 					</Typography>
 					<Button onClick={() => navigate("/login")} color="inherit">

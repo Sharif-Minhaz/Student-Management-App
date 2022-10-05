@@ -1,20 +1,23 @@
 import "./auth.css";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 import {
 	Avatar,
 	Button,
 	CssBaseline,
-	TextField,
 	Grid,
 	Typography,
 	Container,
 	Paper,
 	Stack,
+	FormHelperText,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../services/authSlice";
-import { toast } from "react-toastify";
+import Loading from "../../templates/loading/Loading";
+import PasswordField from "../../templates/textFields/PasswordField";
+import UserIdField from "../../templates/textFields/UserIdField";
 
 const defaultValue = { userId: "", password: "" };
 
@@ -22,6 +25,7 @@ const Login = () => {
 	document.title = "Student Management | Login";
 	const [login, responseInfo] = useLoginMutation();
 	const [loginData, setLoginData] = useState(defaultValue);
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -29,6 +33,8 @@ const Login = () => {
 			setLoginData(defaultValue);
 			toast.success(responseInfo.data?.message);
 			navigate("/dashboard");
+		} else if (responseInfo.isSuccess && responseInfo.data?.isError) {
+			toast.error(responseInfo.data?.message);
 		} else if (responseInfo.isError) {
 			toast.error("Something went wrong!");
 		}
@@ -43,11 +49,11 @@ const Login = () => {
 		setLoginData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
-	if (responseInfo.isLoading) return <div>Loading....</div>;
 	if (responseInfo.isError) return <h1>An error occurred {responseInfo.error.error}</h1>;
 
 	return (
 		<Container component="div" maxWidth="xs" className="auth-base">
+			{responseInfo.isLoading && <Loading />}
 			<CssBaseline />
 			<Paper sx={{ p: 3 }}>
 				<Stack direction="row" sx={{ alignItems: "center", mb: 2 }}>
@@ -61,31 +67,31 @@ const Login = () => {
 				<form onSubmit={handleLoginSubmit}>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="userId"
-								label="Student or Employee id"
-								name="userId"
-								autoComplete="userId"
-								value={loginData.userId}
-								onChange={handleOnchange}
+							<UserIdField
+								responseInfo={responseInfo}
+								data={loginData.userId}
+								handleOnchange={handleOnchange}
 							/>
+							{responseInfo.data?.error?.userId && (
+								<FormHelperText error id="userId-error-text">
+									{responseInfo.data?.error?.userId}
+								</FormHelperText>
+							)}
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								name="password"
-								label="Password"
-								type="password"
-								id="password"
-								autoComplete="current-password"
-								value={loginData.password}
-								onChange={handleOnchange}
+							<PasswordField
+								responseInfo={responseInfo}
+								data={loginData}
+								handleOnchange={handleOnchange}
 							/>
+							{responseInfo.data?.error?.password && (
+								<FormHelperText error id="password-error-text">
+									{responseInfo.data?.error?.password}
+								</FormHelperText>
+							)}
+							{responseInfo.isSuccess && !responseInfo.data?.success && (
+								<FormHelperText error>{responseInfo.data?.message}</FormHelperText>
+							)}
 						</Grid>
 						<Grid item sx={{ mb: 2 }}>
 							<Typography component="small" fontSize={14}>

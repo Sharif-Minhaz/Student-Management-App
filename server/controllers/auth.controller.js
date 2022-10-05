@@ -38,9 +38,11 @@ exports.loginController = async (req, res, next) => {
 					userData: restData,
 				});
 			}
-			return res.status(404).json({ success: false, message: "Wrong credentials." });
+			return res
+				.status(200)
+				.json({ success: false, isError: true, message: "Wrong credentials." });
 		}
-		res.status(404).json({ success: false, message: "Wrong credentials." });
+		res.status(200).json({ success: false, isError: true, message: "Wrong credentials." });
 	} catch (err) {
 		next(err);
 	}
@@ -52,10 +54,12 @@ exports.signupController = async (req, res, next) => {
 	try {
 		const isFound = await User.exists({ userId });
 		if (isFound)
-			return res.status(200).json({ success: false, message: "User Id already in use." });
+			return res
+				.status(200)
+				.json({ success: false, duplication: true, message: "User Id already in use." });
 
 		const hashedPassword = await bcrypt.hash(password, 10);
-		
+
 		const newUser = new User({
 			primaryName,
 			role,

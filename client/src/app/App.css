@@ -7,9 +7,19 @@
 	font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 
+body {
+	position: relative;
+}
+
 a {
 	text-decoration: none;
 }
 .main-content {
 	min-height: calc(100vh - 128px);
+	margin-top: 64px;
+}
+
+.brand img {
+	width: 284px;
+	margin-top: 8px;
 }
