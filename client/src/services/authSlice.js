@@ -6,6 +6,7 @@ export const authApi = createApi({
 		baseUrl: "http://localhost:8080/auth/",
 		credentials: "include",
 	}),
+	tagTypes: ["isLogin"],
 	endpoints: (builder) => ({
 		signup: builder.mutation({
 			query: (signupData) => {
@@ -30,8 +31,31 @@ export const authApi = createApi({
 					},
 				};
 			},
+			invalidatesTags: ["isLogin"],
+		}),
+		isLoggedIn: builder.query({
+			query: () => {
+				return {
+					url: "check",
+					method: "GET",
+				};
+			},
+			providesTags: ["isLogin"],
+		}),
+		logout: builder.mutation({
+			query: () => {
+				return {
+					url: "logout",
+					method: "POST",
+					body: {},
+					headers: {
+						"Content-type": "application/json; charset=UTF-8",
+					},
+				};
+			},
+			invalidatesTags: ["isLogin"],
 		}),
 	}),
 });
 
-export const { useLoginMutation, useSignupMutation } = authApi;
+export const { useLoginMutation, useSignupMutation, useIsLoggedInQuery, useLogoutMutation } = authApi;

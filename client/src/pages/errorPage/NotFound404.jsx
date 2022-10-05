@@ -1,19 +1,19 @@
-import { Container, Box, Button, Divider, Paper, Typography } from "@mui/material";
+import {Container, Box, Button, Divider, Paper, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import "./errorPage.css";
 
-const ErrorPage = ({ message }) => {
-	document.title = "Student Management | Error";
+const NotFound404 = () => {
+	document.title = "Student Management | Not Found";
 	const navigate = useNavigate();
 	return (
 		<Container>
 			<Paper sx={{ p: 2, position: "relative", top: 20, boxShadow: 2 }}>
 				<Typography variant="h2" gutterBottom>
-					{message || "Something Went Wrong"} :(
+					Page not found :(
 				</Typography>
 				<Typography variant="body1" mb={1} gutterBottom>
-					Network error or maybe our server messed up. Check your internet connection or
-					reload the page
+					Maybe the page you are looking for has been removed, or you typed in the wrong
+					URL
 				</Typography>
 				<Divider />
 				<Box mt={1}>
@@ -30,4 +30,4 @@ const ErrorPage = ({ message }) => {
 	);
 };
 
-export default ErrorPage;
+export default NotFound404;

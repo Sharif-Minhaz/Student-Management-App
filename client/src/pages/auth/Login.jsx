@@ -18,6 +18,7 @@ import { useLoginMutation } from "../../services/authSlice";
 import Loading from "../../templates/loading/Loading";
 import PasswordField from "../../templates/textFields/PasswordField";
 import UserIdField from "../../templates/textFields/UserIdField";
+import ErrorPage from "../errorPage/ErrorPage";
 
 const defaultValue = { userId: "", password: "" };
 
@@ -49,7 +50,7 @@ const Login = () => {
 		setLoginData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
-	if (responseInfo.isError) return <h1>An error occurred {responseInfo.error.error}</h1>;
+	if (responseInfo.isError) return <ErrorPage message={responseInfo.error?.error} />;
 
 	return (
 		<Container component="div" maxWidth="xs" className="auth-base">

@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 const { verifyUser } = require("../middlewares/verifyUser");
+const { loggedInUser } = require("../middlewares/loggedInUser");
 
 exports.loginController = async (req, res, next) => {
 	const { userId, password } = req.body;
@@ -81,11 +82,21 @@ exports.signupController = async (req, res, next) => {
 	}
 };
 
+exports.checkIsLoggedInController = async (req, res, next) => {
+	const isLoggedIn = verifyUser(req, res, next);
+	const user = await loggedInUser(req, res, next);
+	if (isLoggedIn) {
+		return res.status(200).json({ success: true, user });
+	} else {
+		res.status(200).json({ success: false });
+	}
+};
+
 exports.logoutController = (req, res, next) => {
 	const isLoggedIn = verifyUser(req, res, next);
 	if (isLoggedIn) {
 		res.clearCookie("auth");
-		return res.status(200).json({ message: "Logout successful" });
+		return res.status(200).json({ success: true, message: "Logout successful" });
 	}
-	res.status(200).json({ message: "Unauthorized" });
+	res.status(200).json({ success: false, message: "Unauthorized" });
 };
