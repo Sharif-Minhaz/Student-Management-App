@@ -15,25 +15,108 @@ import Result from "../pages/result/Result";
 import Report from "../pages/report/Report";
 import ChangePassword from "../pages/auth/ChangePassword";
 import NotFound404 from "../pages/errorPage/NotFound404";
+import { useIsLoggedInQuery } from "../services/authSlice";
+import NotLoggedIn from './NotLoggedIn';
+import LoggedIn from './LoggedIn';
+import TeacherAccess from "./TeacherAccess";
+import NotTeacherAccess from './NotTeacherAccess';
 
 const Routers = () => {
+	const responseInfo = useIsLoggedInQuery();
 	return (
 		<Routes>
 			<Route path="/" element={<Home />} />
-			<Route path="/dashboard" element={<Dashboard />} />
-			<Route path="/login" element={<Login />} />
-			<Route path="/signup" element={<Signup />} />
-			<Route path="/advising" element={<Advising />} />
+			<Route
+				path="/dashboard"
+				element={
+					<LoggedIn>
+						<Dashboard />
+					</LoggedIn>
+				}
+			/>
+			<Route
+				path="/login"
+				element={
+					<NotLoggedIn>
+						<Login />
+					</NotLoggedIn>
+				}
+			/>
+			<Route
+				path="/signup"
+				element={
+					<NotLoggedIn>
+						<Signup />
+					</NotLoggedIn>
+				}
+			/>
+			<Route
+				path="/advising"
+				element={
+					<LoggedIn>
+						<Advising />
+					</LoggedIn>
+				}
+			/>
 			<Route path="/available-courses" element={<AvailableCourse />} />
-			<Route path="/live-result" element={<LiveResult />} />
-			<Route path="/profile/view" element={<Profile />} />
-			<Route path="/profile/create" element={<CreateProfile />} />
-			<Route path="/profile/edit" element={<UpdateProfile />} />
-			<Route path="/registered-courses" element={<RegisteredCourse />} />
-			<Route path="/registered-students" element={<RegisteredStudent />} />
+			<Route
+				path="/live-result"
+				element={
+					<NotTeacherAccess>
+						<LiveResult />
+					</NotTeacherAccess>
+				}
+			/>
+			<Route
+				path="/profile/view"
+				element={
+					<LoggedIn>
+						<Profile />
+					</LoggedIn>
+				}
+			/>
+			<Route
+				path="/profile/create"
+				element={
+					<LoggedIn>
+						<CreateProfile />
+					</LoggedIn>
+				}
+			/>
+			<Route
+				path="/profile/edit"
+				element={
+					<LoggedIn>
+						<UpdateProfile />
+					</LoggedIn>
+				}
+			/>
+			<Route
+				path="/registered-courses"
+				element={
+					<LoggedIn>
+						<RegisteredCourse />
+					</LoggedIn>
+				}
+			/>
+			<Route
+				path="/registered-students"
+				element={
+					<TeacherAccess>
+						<RegisteredStudent />
+					</TeacherAccess>
+				}
+			/>
 			<Route path="/result" element={<Result />} />
 			<Route path="/report" element={<Report />} />
-			<Route path="/password/change" element={<ChangePassword />} />
+			<Route
+				path="/password/change"
+				element={
+					<LoggedIn>
+						<ChangePassword />
+					</LoggedIn>
+				}
+			/>
 			<Route path="*" element={<NotFound404 />} />
 		</Routes>
 	);
