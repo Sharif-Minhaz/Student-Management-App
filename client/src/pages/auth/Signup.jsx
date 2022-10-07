@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
-import { useSignupMutation } from "../../services/authSlice";
+import { useSignupMutation } from "../../services/apiSlice";
 import Loading from "../../templates/loading/Loading";
 import { toast } from "react-toastify";
 import UserIdField from "../../templates/textFields/UserIdField";

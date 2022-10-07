@@ -15,14 +15,12 @@ import Result from "../pages/result/Result";
 import Report from "../pages/report/Report";
 import ChangePassword from "../pages/auth/ChangePassword";
 import NotFound404 from "../pages/errorPage/NotFound404";
-import { useIsLoggedInQuery } from "../services/authSlice";
-import NotLoggedIn from './NotLoggedIn';
-import LoggedIn from './LoggedIn';
+import NotLoggedIn from "./NotLoggedIn";
+import LoggedIn from "./LoggedIn";
 import TeacherAccess from "./TeacherAccess";
-import NotTeacherAccess from './NotTeacherAccess';
+import NotTeacherAccess from "./NotTeacherAccess";
 
 const Routers = () => {
-	const responseInfo = useIsLoggedInQuery();
 	return (
 		<Routes>
 			<Route path="/" element={<Home />} />

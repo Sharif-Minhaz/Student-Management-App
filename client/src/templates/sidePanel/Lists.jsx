@@ -22,7 +22,7 @@ import {
 	AppRegistration,
 	SupervisedUserCircle,
 } from "@mui/icons-material";
-import { useIsLoggedInQuery, useLogoutMutation } from "../../services/authSlice";
+import { useIsLoggedInQuery, useLogoutMutation } from "../../services/apiSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 

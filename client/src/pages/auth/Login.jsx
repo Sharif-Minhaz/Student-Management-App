@@ -14,7 +14,7 @@ import {
 	FormHelperText,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
-import { useLoginMutation } from "../../services/authSlice";
+import { useLoginMutation } from "../../services/apiSlice";
 import Loading from "../../templates/loading/Loading";
 import PasswordField from "../../templates/textFields/PasswordField";
 import UserIdField from "../../templates/textFields/UserIdField";

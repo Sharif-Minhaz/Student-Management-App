@@ -5,7 +5,7 @@ import brandImage from "../../assets/images/brand.png";
 import { AppBar, Box, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useIsLoggedInQuery, useLogoutMutation } from "../../services/authSlice";
+import { useIsLoggedInQuery, useLogoutMutation } from "../../services/apiSlice";
 import UserMenu from "./UserMenu";
 
 const Navbar = ({ setOpenDrawer }) => {

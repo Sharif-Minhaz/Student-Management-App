@@ -1,6 +1,18 @@
 .bg-img {
 	width: 100%;
 	filter: drop-shadow(3px 3px 1px hsl(0deg 0% 0% / 0.5));
+	animation: moving 3s infinite;
+}
+@keyframes moving {
+	0% {
+		scale: 1;
+	}
+	50% {
+		scale: 1.010;
+	}
+	100% {
+		scale: 1;
+	}
 }
 .shadow2 {
 	-webkit-text-stroke: 1px #f8f8f8;
@@ -9,10 +21,18 @@
 .MuiBox-root .MuiButtonBase-root.rounded-btn {
 	border: 2px solid #6a7bd2;
 	border-radius: 50px;
-    background-color: #6a7bd2;
-    color: white;
-    
+	background-color: #6a7bd2;
+	color: white;
+	animation: shadow-pulse 3s infinite;
 }
 .MuiBox-root .MuiButtonBase-root.rounded-btn:hover {
-    background-color: #5369d9;
+	background-color: #5369d9;
+}
+@keyframes shadow-pulse {
+	0% {
+		box-shadow: 0 0 0 0px rgba(175, 176, 179, 0.88);
+	}
+	100% {
+		box-shadow: 0 0 0 10px rgba(5, 5, 5, 0.127);
+	}
 }

@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useIsLoggedInQuery } from "../services/authSlice";
+import { useIsLoggedInQuery } from "../services/apiSlice";
 
 const LoggedIn = ({ children }) => {
 	const responseInfo = useIsLoggedInQuery();
