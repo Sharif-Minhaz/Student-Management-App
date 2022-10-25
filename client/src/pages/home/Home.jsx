@@ -10,9 +10,9 @@ const Home = () => {
 	return (
 		<Paper
 			sx={{
-				m: 2,
+				m: 3,
 				p: 3,
-				mt: "80px",
+				mt: "88px",
 				backgroundImage: `url(${mainBgImage})`,
 				backgroundPosition: "center",
 				backgroundRepeat: "repeat",

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
 	reducerPath: "api",
 	baseQuery: fetchBaseQuery({
-		baseUrl: "http://localhost:8080/auth/",
+		baseUrl: "http://localhost:8080/",
 		credentials: "include",
 	}),
 	tagTypes: ["isLogin", "allCourses"],
@@ -11,7 +11,7 @@ export const api = createApi({
 		// auth api start
 		signup: builder.mutation({
 			query: (signupData) => ({
-				url: "signup",
+				url: "auth/signup",
 				method: "POST",
 				body: signupData,
 				headers: {
@@ -21,7 +21,7 @@ export const api = createApi({
 		}),
 		login: builder.mutation({
 			query: (loginData) => ({
-				url: "login",
+				url: "auth/login",
 				method: "POST",
 				body: loginData,
 				headers: {
@@ -32,14 +32,14 @@ export const api = createApi({
 		}),
 		isLoggedIn: builder.query({
 			query: () => ({
-				url: "check",
+				url: "auth/check",
 				method: "GET",
 			}),
 			providesTags: ["isLogin"],
 		}),
 		logout: builder.mutation({
 			query: () => ({
-				url: "logout",
+				url: "auth/logout",
 				method: "POST",
 				body: {},
 				headers: {
@@ -52,7 +52,7 @@ export const api = createApi({
 		// courses api start
 		getAllCourses: builder.query({
 			query: () => ({
-				url: "all",
+				url: "courses/all",
 				method: "GET",
 			}),
 			providesTags: ["allCourses"],
