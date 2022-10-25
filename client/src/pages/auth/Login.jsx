@@ -35,6 +35,7 @@ const Login = () => {
 			toast.success(responseInfo.data?.message);
 			navigate("/dashboard");
 		} else if (responseInfo.isSuccess && responseInfo.data?.isError) {
+			setLoginData((prev) => ({ ...prev, password: "" }));
 			toast.error(responseInfo.data?.message);
 		} else if (responseInfo.isError) {
 			toast.error("Something went wrong!");
