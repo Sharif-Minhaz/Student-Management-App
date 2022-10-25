@@ -17,17 +17,21 @@ exports.addCoursePostController = async (req, res, next) => {
 	try {
 		const newCourse = new AllCourses(req.body);
 		await newCourse.save();
-		res.status(201).json({ message: "Course added successfully" });
+		res.status(201).json({ message: "Course added successfully", success: true });
 	} catch (err) {
 		next(err);
 	}
 };
 
 exports.deleteCourseController = async (req, res, next) => {
-	const { courseId } = req.params;
+	const { courseCode } = req.params;
 	try {
-		const deletedCourse = await AllCourses.findOneAndDelete(courseId);
-		res.status(200).json({ message: "Course deleted successfully", deletedCourse });
+		const deletedCourse = await AllCourses.findOneAndDelete({ courseCode: courseCode });
+		res.status(200).json({
+			message: "Course deleted successfully",
+			deletedCourse,
+			success: true,
+		});
 	} catch (err) {
 		next(err);
 	}

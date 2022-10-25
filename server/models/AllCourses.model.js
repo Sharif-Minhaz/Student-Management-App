@@ -19,13 +19,15 @@ const allCoursesSchema = new Schema({
 	},
 	credit: {
 		type: Number,
-		max: 4,
+		max: 5,
 		min: 1,
 		required: true,
 	},
 	maxNumber: {
 		type: Number,
 		required: true,
+		max: 100,
+		min: 10,
 	},
 });
 

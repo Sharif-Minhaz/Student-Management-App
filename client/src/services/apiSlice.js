@@ -57,6 +57,24 @@ export const api = createApi({
 			}),
 			providesTags: ["allCourses"],
 		}),
+		addCourse: builder.mutation({
+			query: (courseData) => ({
+				url: "/courses/add",
+				method: "POST",
+				body: courseData,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+			invalidatesTags: ["allCourses"],
+		}),
+		deleteCourse: builder.mutation({
+			query: (courseCode) => ({
+				url: `/courses/delete/${courseCode}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["allCourses"],
+		}),
 		// courses api end
 	}),
 });
@@ -67,4 +85,6 @@ export const {
 	useIsLoggedInQuery,
 	useLogoutMutation,
 	useGetAllCoursesQuery,
+	useAddCourseMutation,
+	useDeleteCourseMutation
 } = api;

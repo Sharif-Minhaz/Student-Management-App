@@ -7,28 +7,32 @@ import AddCourse from "./AddCourse";
 
 const AvailableCourse = () => {
 	document.title = "Student Management | Available-Courses";
-	const [editBox, setEditBox] = useState(false);
+	const [addBox, setAddBox] = useState(false);
 	const responseInfo = useGetAllCoursesQuery();
 	const roleInfo = useIsLoggedInQuery();
 
+	const handleOpenAddBoxes = () => {
+		setAddBox((prev) => !prev);
+	};
+
 	return (
 		<>
-			<Paper sx={{ m: 3, position: "relative", top: "24px" }}>
+			<Paper sx={{ m: 3, mt: "88px" }}>
 				{responseInfo.isSuccess && (
 					<CourseTable tableData={responseInfo?.data?.allCourses} />
 				)}
 			</Paper>
 			{roleInfo.data?.success && roleInfo.data?.user?.role === "teacher" && (
-				<Box>
+				<Box sx={{ mx: 3, mb: 3 }}>
 					<Button
-						onClick={() => setEditBox(true)}
-						sx={{ m: 3 }}
+						onClick={handleOpenAddBoxes}
+						sx={{ mb: 3,  }}
 						variant="outlined"
 						startIcon={<AddIcon />}
 					>
 						Add new course
 					</Button>
-					{editBox && <AddCourse />}
+					{addBox && <AddCourse handleOpenAddBoxes={handleOpenAddBoxes} />}
 				</Box>
 			)}
 		</>
