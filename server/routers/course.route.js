@@ -14,7 +14,7 @@ router.get("/all", getAllCoursesController);
 router.get("/student/all-courses", viewAssignCourseController);
 router.post("/add", addCoursePostController);
 router.post("/entry-mark", entryMarkController);
-router.patch("/update/:courseId", updateCourseController);
+router.patch("/update/:courseCode", updateCourseController);
 router.patch("/assign/:userId/:id", assignCourseToStudentController);
 router.delete("/delete/:courseCode", deleteCourseController);
 router.delete("/remove-course/:userId/:id", removeCourseOfStudentController);

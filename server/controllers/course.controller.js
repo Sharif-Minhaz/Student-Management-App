@@ -38,10 +38,17 @@ exports.deleteCourseController = async (req, res, next) => {
 };
 
 exports.updateCourseController = async (req, res, next) => {
-	const { courseId } = req.params;
+	const courseId = req.params?.courseCode;
+	const {courseCode, courseName, courseTeacher, credit, maxNumber} = req.body;
 	try {
-		const updatedCourse = await AllCourses.findOneAndUpdate(courseId, req.body, { new: true });
-		res.status(200).json({ message: "Course updated successfully", updatedCourse });
+		const updatedCourse = await AllCourses.findOneAndUpdate(
+			courseId,
+			{ courseCode, courseName, courseTeacher, credit, maxNumber },
+			{
+				new: true,
+			}
+		);
+		res.status(200).json({ message: "Course updated successfully", updatedCourse, success: true });
 	} catch (err) {
 		next(err);
 	}

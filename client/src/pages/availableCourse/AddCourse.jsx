@@ -54,7 +54,7 @@ const AddCourse = ({ handleOpenAddBoxes }) => {
 			toast.success(responseInfo.data?.message);
 			setNewCourse(initialState);
 		} else if (responseInfo.isSuccess && !responseInfo.data?.success) {
-			toast.error("Something went wrong");
+			toast.error("Something went wrong adding course");
 		}
 	}, [responseInfo]);
 

@@ -75,6 +75,17 @@ export const api = createApi({
 			}),
 			invalidatesTags: ["allCourses"],
 		}),
+		updateCourse: builder.mutation({
+			query: (updatedData, courseCode) => ({
+				url: `/courses/update/${courseCode}`,
+				method: "PATCH",
+				body: updatedData,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+			invalidatesTags: ["allCourses"],
+		}),
 		// courses api end
 	}),
 });
@@ -86,5 +97,6 @@ export const {
 	useLogoutMutation,
 	useGetAllCoursesQuery,
 	useAddCourseMutation,
-	useDeleteCourseMutation
+	useDeleteCourseMutation,
+	useUpdateCourseMutation,
 } = api;
