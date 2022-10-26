@@ -34,7 +34,7 @@ const CourseSingleRow = ({ rowData, deleteCourse }) => {
 
 	useEffect(() => {
 		if (responseInfo.isSuccess && responseInfo.data?.success) {
-            setUpdateStatus(false);
+			setUpdateStatus(false);
 			toast.success(responseInfo.data?.message);
 		} else if (responseInfo.isSuccess && !responseInfo.data?.success) {
 			toast.error("Something went wrong!");
@@ -48,7 +48,11 @@ const CourseSingleRow = ({ rowData, deleteCourse }) => {
 	};
 
 	const handleUpdateSubmit = () => {
-		updateCourse(updateCourseData, rowData.courseCode);
+		const isEmpty = Object.values(updateCourseData).some((key) => key === null || key === "");
+		if (!isEmpty) {
+			return updateCourse(updateCourseData);
+		}
+		toast.error("All fields are required!");
 	};
 
 	return (
@@ -59,12 +63,13 @@ const CourseSingleRow = ({ rowData, deleteCourse }) => {
 			<StyledTableCell component="th" scope="row">
 				{updateStatus ? (
 					<TextField
-						label="Course Code"
+						label="Course Code (Not editable)"
 						size="small"
 						name="courseCode"
 						onChange={handleOnChange}
 						value={updateCourseData.courseCode}
 						required
+						inputProps={{ readOnly: true }}
 					/>
 				) : (
 					rowData.courseCode
@@ -73,12 +78,13 @@ const CourseSingleRow = ({ rowData, deleteCourse }) => {
 			<StyledTableCell>
 				{updateStatus ? (
 					<TextField
-						label="Course Name"
+						label="Course Name (Not editable)"
 						size="small"
 						name="courseName"
 						onChange={handleOnChange}
 						value={updateCourseData.courseName}
 						required
+						inputProps={{ readOnly: true }}
 					/>
 				) : (
 					rowData.courseName

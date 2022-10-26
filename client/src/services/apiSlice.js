@@ -76,8 +76,8 @@ export const api = createApi({
 			invalidatesTags: ["allCourses"],
 		}),
 		updateCourse: builder.mutation({
-			query: (updatedData, courseCode) => ({
-				url: `/courses/update/${courseCode}`,
+			query: (updatedData) => ({
+				url: `/courses/update/${updatedData._id}`,
 				method: "PATCH",
 				body: updatedData,
 				headers: {
