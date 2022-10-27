@@ -10,14 +10,15 @@ const profileSchema = new Schema({
 		lowercase: true,
 		required: true,
 	},
-	userId: String,
+	mobile: String,
+	userId: { type: String, required: true },
 	profilePicture: {
 		type: String,
 		default:
 			"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png",
 	},
 	presentAddress: String,
-	currentAddress: String,
+	permanentAddress: String,
 	localGuardianName: String,
 	localGuardianEmail: {
 		type: String,

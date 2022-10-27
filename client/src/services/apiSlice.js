@@ -87,6 +87,9 @@ export const api = createApi({
 			invalidatesTags: ["allCourses"],
 		}),
 		// courses api end
+		//profile api start
+		
+		//profile api end
 	}),
 });
 
