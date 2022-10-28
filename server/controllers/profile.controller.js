@@ -1,11 +1,16 @@
 const User = require("../models/User.model");
 const Profile = require("../models/Profile.model");
 const { currentUserId } = require("../middlewares/currentUserId");
+const cloudinary = require("../utils/cloudinary");
 
 exports.profileCreateController = async (req, res, next) => {
 	try {
 		const currentUser = await User.findOne({ userId: req.body?.userId });
-		const body = req.body;
+		const { body } = req;
+		console.log(req.file);
+		const result = await cloudinary.uploader.upload(req.file.path, {
+			folder: "studentManagement",
+		});
 
 		if (currentUser) {
 			// delete unnecessary properties for teacher
@@ -14,15 +19,21 @@ exports.profileCreateController = async (req, res, next) => {
 				delete body.localGuardianEmail;
 				delete body.localGuardianMobile;
 			}
-			const newProfile = new Profile(body);
+			const newProfile = new Profile({
+				...body,
+				profilePicture: result.secure_url,
+				profilePicCloudinaryId: result.public_id,
+			});
 			await newProfile.save();
 
 			currentUser.profile = newProfile._id;
 			await currentUser.save();
 
-			return res.status(201).json({ message: "Profile created successfully", newProfile });
+			return res
+				.status(201)
+				.json({ message: "Profile created successfully", newProfile, success: true });
 		}
-		res.status(403).json({ message: "Unauthorized" });
+		res.status(403).json({ message: "Unauthorized", success: false });
 	} catch (err) {
 		next(err);
 	}

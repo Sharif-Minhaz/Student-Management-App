@@ -21,103 +21,103 @@ import TeacherAccess from "./TeacherAccess";
 import NotTeacherAccess from "./NotTeacherAccess";
 
 const Routers = () => {
-	return (
-		<Routes>
-			<Route path="/" element={<Home />} />
-			<Route
-				path="/dashboard"
-				element={
-					<LoggedIn>
-						<Dashboard />
-					</LoggedIn>
-				}
-			/>
-			<Route
-				path="/login"
-				element={
-					<NotLoggedIn>
-						<Login />
-					</NotLoggedIn>
-				}
-			/>
-			<Route
-				path="/signup"
-				element={
-					<NotLoggedIn>
-						<Signup />
-					</NotLoggedIn>
-				}
-			/>
-			<Route
-				path="/advising"
-				element={
-					<LoggedIn>
-						<Advising />
-					</LoggedIn>
-				}
-			/>
-			<Route path="/available-courses" element={<AvailableCourse />} />
-			<Route
-				path="/live-result"
-				element={
-					<NotTeacherAccess>
-						<LiveResult />
-					</NotTeacherAccess>
-				}
-			/>
-			<Route
-				path="/profile/view"
-				element={
-					<LoggedIn>
-						<Profile />
-					</LoggedIn>
-				}
-			/>
-			<Route
-				path="/profile/create"
-				element={
-					<LoggedIn>
-						<CreateProfile />
-					</LoggedIn>
-				}
-			/>
-			<Route
-				path="/profile/edit"
-				element={
-					<LoggedIn>
-						<UpdateProfile />
-					</LoggedIn>
-				}
-			/>
-			<Route
-				path="/registered-courses"
-				element={
-					<LoggedIn>
-						<RegisteredCourse />
-					</LoggedIn>
-				}
-			/>
-			<Route
-				path="/registered-students"
-				element={
-					<TeacherAccess>
-						<RegisteredStudent />
-					</TeacherAccess>
-				}
-			/>
-			<Route path="/result" element={<Result />} />
-			<Route path="/report" element={<Report />} />
-			<Route
-				path="/password/change"
-				element={
-					<LoggedIn>
-						<ChangePassword />
-					</LoggedIn>
-				}
-			/>
-			<Route path="*" element={<NotFound404 />} />
-		</Routes>
-	);
+		return (
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route
+					path="/dashboard"
+					element={
+						<LoggedIn>
+							<Dashboard />
+						</LoggedIn>
+					}
+				/>
+				<Route
+					path="/login"
+					element={
+						<NotLoggedIn>
+							<Login />
+						</NotLoggedIn>
+					}
+				/>
+				<Route
+					path="/signup"
+					element={
+						<NotLoggedIn>
+							<Signup />
+						</NotLoggedIn>
+					}
+				/>
+				<Route
+					path="/advising"
+					element={
+						<LoggedIn>
+							<Advising />
+						</LoggedIn>
+					}
+				/>
+				<Route path="/available-courses" element={<AvailableCourse />} />
+				<Route
+					path="/live-result"
+					element={
+						<NotTeacherAccess>
+							<LiveResult />
+						</NotTeacherAccess>
+					}
+				/>
+				<Route
+					path="/profile/view"
+					element={
+						<LoggedIn>
+							<Profile />
+						</LoggedIn>
+					}
+				/>
+				<Route
+					path="/profile/create"
+					element={
+						<LoggedIn>
+							<CreateProfile />
+						</LoggedIn>
+					}
+				/>
+				<Route
+					path="/profile/edit"
+					element={
+						<LoggedIn>
+							<UpdateProfile />
+						</LoggedIn>
+					}
+				/>
+				<Route
+					path="/registered-courses"
+					element={
+						<LoggedIn>
+							<RegisteredCourse />
+						</LoggedIn>
+					}
+				/>
+				<Route
+					path="/registered-students"
+					element={
+						<TeacherAccess>
+							<RegisteredStudent />
+						</TeacherAccess>
+					}
+				/>
+				<Route path="/result" element={<Result />} />
+				<Route path="/report" element={<Report />} />
+				<Route
+					path="/password/change"
+					element={
+						<LoggedIn>
+							<ChangePassword />
+						</LoggedIn>
+					}
+				/>
+				<Route path="*" element={<NotFound404 />} />
+			</Routes>
+		);
 };
 
 export default Routers;

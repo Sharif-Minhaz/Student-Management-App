@@ -17,7 +17,7 @@ const Profile = () => {
 				Currently, you don't have any profile!
 			</Typography>
 			<Typography textAlign="center">
-				<Link to="/profile/create">
+				<Link to="/profile/create" replace={true}>
 					<Button size="small" variant="contained" color="info" endIcon={<AccountBox />}>
 						Create Profile
 					</Button>

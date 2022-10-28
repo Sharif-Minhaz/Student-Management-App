@@ -17,6 +17,7 @@ const profileSchema = new Schema({
 		default:
 			"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png",
 	},
+	profilePicCloudinaryId: String,
 	presentAddress: String,
 	permanentAddress: String,
 	localGuardianName: String,

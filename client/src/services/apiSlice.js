@@ -88,7 +88,16 @@ export const api = createApi({
 		}),
 		// courses api end
 		//profile api start
-		
+		createProfile: builder.mutation({
+			query: (profileData) => ({
+				url: "/profile/create",
+				method: "POST",
+				body: profileData,
+				headers: {
+					"Content-type": "multipart/form-data",
+				},
+			}),
+		}),
 		//profile api end
 	}),
 });
@@ -102,4 +111,5 @@ export const {
 	useAddCourseMutation,
 	useDeleteCourseMutation,
 	useUpdateCourseMutation,
+	useCreateProfileMutation,
 } = api;

@@ -38,7 +38,7 @@ const ProfileInputBoxes = ({
 							<Typography variant="body1">Current profile picture</Typography>
 							<Avatar variant="rounded" sx={{ width: "160px", height: "160px" }}>
 								<img
-									style={{ width: "100%" }}
+									style={{ width: "100%", height: "100%", objectFit: "cover" }}
 									src={profileData.profilePicture}
 									alt="current_profile_pic"
 								/>
