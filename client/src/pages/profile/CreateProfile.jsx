@@ -4,7 +4,7 @@ import Loading from "../../templates/loading/Loading";
 import { useEffect, useState } from "react";
 import ProfileInputBoxes from "./ProfileInputBoxes";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const defaultProfilePic =
 	"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png";
@@ -39,25 +39,34 @@ const CreateProfile = () => {
 	};
 
 	useEffect(() => {
-		setProfileData((prev) => ({ ...prev, userId: responseInfo.data?.user?.userId }));
+		if (responseInfo.data?.user?.profile) {
+			navigate("/profile/view", { replace: true });
+		} else setProfileData((prev) => ({ ...prev, userId: responseInfo.data?.user?.userId }));
 	}, [responseInfo]);
 
 	useEffect(() => {
-		if(profileResInfo.isSuccess && profileResInfo.data?.success) {
+		if (profileResInfo.isSuccess && profileResInfo.data?.success) {
 			navigate("/profile/view");
-			toast.success(profileResInfo.data?.message)
+			toast.success(profileResInfo.data?.message);
 		}
 	}, [profileResInfo]);
 
 	const handleOnChange = (e) => {
-		if (e.target.type !== "file") {
-			return setProfileData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-		}
-		setProfileData((prev) => ({
-			...prev,
-			profilePicture: URL.createObjectURL(e.target.files[0]),
-		}));
-		setCancelProfilePic(true);
+		if (e.target.type === "file") {
+			const img = e.target.files[0];
+			const reader = new FileReader();
+			reader.readAsDataURL(img);
+			reader.onload = () => {
+				setProfileData((prev) => ({
+					...prev,
+					profilePicture: reader.result,
+				}));
+				setCancelProfilePic(true);
+			};
+			reader.onerror = (error) => {
+				console.log("Error: ", error);
+			};
+		} else setProfileData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
 	const handleSubmit = (e) => {
@@ -68,6 +77,7 @@ const CreateProfile = () => {
 	if (responseInfo.isSuccess) {
 		return (
 			<ProfileInputBoxes
+				profileResInfo={profileResInfo}
 				handleOnChange={handleOnChange}
 				handleSubmit={handleSubmit}
 				profileData={profileData}

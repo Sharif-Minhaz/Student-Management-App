@@ -5,10 +5,9 @@ const cloudinary = require("../utils/cloudinary");
 
 exports.profileCreateController = async (req, res, next) => {
 	try {
-		const currentUser = await User.findOne({ userId: req.body?.userId });
 		const { body } = req;
-		console.log(req.file);
-		const result = await cloudinary.uploader.upload(req.file.path, {
+		const currentUser = await User.findOne({ userId: body.userId });
+		const result = await cloudinary.uploader.upload(body.profilePicture, {
 			folder: "studentManagement",
 		});
 
@@ -19,6 +18,7 @@ exports.profileCreateController = async (req, res, next) => {
 				delete body.localGuardianEmail;
 				delete body.localGuardianMobile;
 			}
+			// appending cloudinary key with uploaded image url
 			const newProfile = new Profile({
 				...body,
 				profilePicture: result.secure_url,

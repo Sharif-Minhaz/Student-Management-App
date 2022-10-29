@@ -6,7 +6,7 @@ export const api = createApi({
 		baseUrl: "http://localhost:8080/",
 		credentials: "include",
 	}),
-	tagTypes: ["isLogin", "allCourses"],
+	tagTypes: ["isLogin", "allCourses", "profile"],
 	endpoints: (builder) => ({
 		// auth api start
 		signup: builder.mutation({
@@ -93,10 +93,15 @@ export const api = createApi({
 				url: "/profile/create",
 				method: "POST",
 				body: profileData,
-				headers: {
-					"Content-type": "multipart/form-data",
-				},
 			}),
+			invalidatesTags: ["isLogin"],
+		}),
+		viewProfile: builder.query({
+			query: () => ({
+				url: "profile/view",
+				method: "GET",
+			}),
+			providesTags: ["profile"],
 		}),
 		//profile api end
 	}),
@@ -112,4 +117,5 @@ export const {
 	useDeleteCourseMutation,
 	useUpdateCourseMutation,
 	useCreateProfileMutation,
+	useViewProfileQuery,
 } = api;

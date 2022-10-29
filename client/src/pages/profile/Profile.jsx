@@ -1,30 +1,39 @@
 import "./profile.css";
-import { Link } from "react-router-dom";
-import { Paper, Typography, Button } from "@mui/material";
-import { AccountBox } from "@mui/icons-material";
-import { useIsLoggedInQuery } from "../../services/apiSlice";
+import { useIsLoggedInQuery, useViewProfileQuery } from "../../services/apiSlice";
+import { useEffect, useState } from "react";
+import { Avatar, Paper, Stack } from "@mui/material";
+import NoProfile from "./NoProfile";
+import Loading from "../../templates/loading/Loading";
 
 const Profile = () => {
 	document.title = "Student Management | Profile";
 	const responseInfo = useIsLoggedInQuery();
+	const profileInfo = useViewProfileQuery();
+	const [profileData, setProfileData] = useState({});
 
-	if (responseInfo.isSuccess && responseInfo.data?.user?.profile) {
-		return <div>Profile</div>;
+	useEffect(() => {
+		if (responseInfo.isSuccess && profileInfo.isSuccess && responseInfo.data?.user?.profile)
+			setProfileData(profileInfo.data?.userProfile?.profile);
+		else setProfileData({});
+	}, [responseInfo, profileInfo]);
+
+	if (profileInfo.isLoading) return <Loading />;
+	if (profileData) {
+		return (
+			<Paper sx={{ m: 3, p: 3, mt: "88px", maxWidth: 800, mx: "auto" }} elevation={2}>
+				<Stack>
+					<Avatar variant="rounded" sx={{ width: "160px", height: "160px" }}>
+						<img
+							style={{ width: "100%", height: "100%", objectFit: "cover" }}
+							src={profileData.profilePicture}
+							alt="profile_pic"
+						/>
+					</Avatar>
+				</Stack>
+			</Paper>
+		);
 	}
-	return (
-		<Paper sx={{ m: 3, p: 3, mt: "88px" }} elevation={2}>
-			<Typography variant="h5" mb={2} textAlign="center">
-				Currently, you don't have any profile!
-			</Typography>
-			<Typography textAlign="center">
-				<Link to="/profile/create" replace={true}>
-					<Button size="small" variant="contained" color="info" endIcon={<AccountBox />}>
-						Create Profile
-					</Button>
-				</Link>
-			</Typography>
-		</Paper>
-	);
+	return <NoProfile />;
 };
 
 export default Profile;
