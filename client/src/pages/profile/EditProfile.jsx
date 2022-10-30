@@ -1,35 +1,28 @@
-import "./profile.css";
-import { useCreateProfileMutation, useIsLoggedInQuery } from "../../services/apiSlice";
-import Loading from "../../templates/loading/Loading";
 import { useEffect, useState } from "react";
+import {
+	useEditProfileMutation,
+	useIsLoggedInQuery,
+	useViewProfileQuery,
+} from "../../services/apiSlice";
+import "./profile.css";
 import ProfileInputBoxes from "./ProfileInputBoxes";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const defaultProfilePic =
 	"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png";
-const initialData = {
-	profilePicture: defaultProfilePic,
-	fullName: "",
-	email: "",
-	mobile: "",
-	userId: "",
-	presentAddress: "",
-	permanentAddress: "",
-	localGuardianName: "",
-	localGuardianEmail: "",
-	localGuardianMobile: "",
-};
 
-const CreateProfile = () => {
-	document.title = "Student Management | Create-Profile";
+const EditProfile = () => {
+	document.title = "Student Management | Edit-Profile";
 	const navigate = useNavigate();
 
 	const responseInfo = useIsLoggedInQuery();
-	const [createProfile, profileResInfo] = useCreateProfileMutation();
+	const currentProfileInfo = useViewProfileQuery();
+
+	const [updateProfile, profileResInfo] = useEditProfileMutation();
 
 	const [imgKey, setImgKey] = useState("initial_key_value");
-	const [profileData, setProfileData] = useState(initialData);
+	const [profileData, setProfileData] = useState({});
 	const [cancelProfilePic, setCancelProfilePic] = useState(false);
 
 	const handleClearProfilePic = () => {
@@ -39,14 +32,17 @@ const CreateProfile = () => {
 	};
 
 	useEffect(() => {
-		if (responseInfo.data?.user?.profile) {
+		if (currentProfileInfo.isSuccess && currentProfileInfo.data) {
+			setProfileData(currentProfileInfo.data?.userProfile?.profile);
+		} else {
 			navigate("/profile/view", { replace: true });
-		} else setProfileData((prev) => ({ ...prev, userId: responseInfo.data?.user?.userId }));
+		}
 		// eslint-disable-next-line
-	}, [responseInfo]);
+	}, [responseInfo, currentProfileInfo]);
 
 	useEffect(() => {
 		if (profileResInfo.isSuccess && !profileResInfo.data?.success) {
+			console.log(profileResInfo);
 			toast.error("Check the input fields!");
 		} else if (profileResInfo.isSuccess && profileResInfo.data?.success) {
 			navigate("/profile/view");
@@ -68,34 +64,29 @@ const CreateProfile = () => {
 				setCancelProfilePic(true);
 			};
 			reader.onerror = (error) => {
-				console.log("Error: ", error);
+				console.error("Error: ", error);
 			};
 		} else setProfileData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (profileData.userId === responseInfo.data?.user?.userId) {
-			return createProfile(profileData);
-		}
-		toast.error("Invalid user id!");
+		setProfileData((prev) => ({ ...prev, userId: responseInfo.data?.user?.userId }));
+		updateProfile(profileData);
 	};
 
-	if (profileResInfo.isLoading) return <Loading />;
-
-	if (responseInfo.isSuccess) {
-		return (
-			<ProfileInputBoxes
-				profileResInfo={profileResInfo}
-				handleOnChange={handleOnChange}
-				handleSubmit={handleSubmit}
-				profileData={profileData}
-				cancelProfilePic={cancelProfilePic}
-				handleClearProfilePic={handleClearProfilePic}
-				imgKey={imgKey}
-			/>
-		);
-	}
+	return (
+		<ProfileInputBoxes
+			profileResInfo={profileResInfo}
+			handleOnChange={handleOnChange}
+			handleSubmit={handleSubmit}
+			profileData={profileData}
+			cancelProfilePic={cancelProfilePic}
+			handleClearProfilePic={handleClearProfilePic}
+			imgKey={imgKey}
+			editingMode={true}
+		/>
+	);
 };
 
-export default CreateProfile;
+export default EditProfile;

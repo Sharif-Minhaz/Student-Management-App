@@ -10,7 +10,13 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-import { AccountBox, AddCircleOutline, Clear, CloudUpload } from "@mui/icons-material";
+import {
+	AccountBox,
+	AddCircleOutline,
+	Clear,
+	CloudUpload,
+	PlaylistAddCheckCircle,
+} from "@mui/icons-material";
 import { useIsLoggedInQuery } from "../../services/apiSlice";
 import Loading from "../../templates/loading/Loading";
 
@@ -22,7 +28,7 @@ const ProfileInputBoxes = ({
 	cancelProfilePic,
 	handleClearProfilePic,
 	imgKey,
-	profileErrors,
+	editingMode = false,
 }) => {
 	const responseInfo = useIsLoggedInQuery();
 
@@ -36,7 +42,9 @@ const ProfileInputBoxes = ({
 						<Avatar>
 							<AccountBox />
 						</Avatar>
-						<Typography variant="h5">Create Profile</Typography>
+						<Typography variant="h5">
+							{editingMode ? "Update Profile" : "Create Profile"}
+						</Typography>
 					</Stack>
 					<Divider />
 					<Box mt={1}>
@@ -57,7 +65,7 @@ const ProfileInputBoxes = ({
 										height: "100%",
 										objectFit: "cover",
 									}}
-									src={profileData.profilePicture}
+									src={profileData?.profilePicture}
 									alt="current_profile_pic"
 								/>
 							</Avatar>
@@ -98,7 +106,7 @@ const ProfileInputBoxes = ({
 							label="Full name"
 							name="fullName"
 							onChange={handleOnChange}
-							value={profileData.fullName}
+							value={profileData?.fullName}
 							disabled={profileResInfo.isLoading}
 							error={Boolean(profileResInfo.data?.error?.fullName)}
 						/>
@@ -115,7 +123,7 @@ const ProfileInputBoxes = ({
 							label="Email address"
 							name="email"
 							onChange={handleOnChange}
-							value={profileData.email}
+							value={profileData?.email}
 							disabled={profileResInfo.isLoading}
 							error={Boolean(profileResInfo.data?.error?.email)}
 						/>
@@ -132,7 +140,7 @@ const ProfileInputBoxes = ({
 							type="tel"
 							name="mobile"
 							onChange={handleOnChange}
-							value={profileData.mobile}
+							value={profileData?.mobile}
 							disabled={profileResInfo.isLoading}
 						/>
 					</Box>
@@ -141,7 +149,7 @@ const ProfileInputBoxes = ({
 							disabled
 							fullWidth
 							label="Student or Employee Id"
-							value={profileData.userId}
+							value={profileData?.userId}
 							name="userId"
 						/>
 					</Box>
@@ -151,7 +159,7 @@ const ProfileInputBoxes = ({
 							label="Present Address"
 							name="presentAddress"
 							onChange={handleOnChange}
-							value={profileData.presentAddress}
+							value={profileData?.presentAddress}
 							disabled={profileResInfo.isLoading}
 						/>
 					</Box>
@@ -161,7 +169,7 @@ const ProfileInputBoxes = ({
 							label="Permanent Address"
 							name="permanentAddress"
 							onChange={handleOnChange}
-							value={profileData.permanentAddress}
+							value={profileData?.permanentAddress}
 							disabled={profileResInfo.isLoading}
 						/>
 					</Box>
@@ -173,7 +181,7 @@ const ProfileInputBoxes = ({
 									label="Local guardian name"
 									name="localGuardianName"
 									onChange={handleOnChange}
-									value={profileData.localGuardianName}
+									value={profileData?.localGuardianName}
 									disabled={profileResInfo.isLoading}
 								/>
 							</Box>
@@ -184,7 +192,7 @@ const ProfileInputBoxes = ({
 									label="Local guardian email address"
 									name="localGuardianEmail"
 									onChange={handleOnChange}
-									value={profileData.localGuardianEmail}
+									value={profileData?.localGuardianEmail}
 									disabled={profileResInfo.isLoading}
 								/>
 							</Box>
@@ -195,15 +203,26 @@ const ProfileInputBoxes = ({
 									label="Local guardian mobile number"
 									name="localGuardianMobile"
 									onChange={handleOnChange}
-									value={profileData.localGuardianMobile}
+									value={profileData?.localGuardianMobile}
 									disabled={profileResInfo.isLoading}
 								/>
 							</Box>
 						</>
 					)}
-					<Button type="submit" variant="contained" endIcon={<AddCircleOutline />}>
-						Create
-					</Button>
+					{editingMode ? (
+						<Button
+							color="success"
+							type="submit"
+							variant="contained"
+							endIcon={<PlaylistAddCheckCircle />}
+						>
+							Update
+						</Button>
+					) : (
+						<Button type="submit" variant="contained" endIcon={<AddCircleOutline />}>
+							Create
+						</Button>
+					)}
 				</form>
 			</Paper>
 		</Box>

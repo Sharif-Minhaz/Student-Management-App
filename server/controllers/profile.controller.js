@@ -3,19 +3,48 @@ const Profile = require("../models/Profile.model");
 const { currentUserId } = require("../middlewares/currentUserId");
 const cloudinary = require("../utils/cloudinary");
 
-exports.profileCreateController = async (req, res, next) => {
-	const defaultProfilePic =
-		"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png";
+const defaultProfilePic =
+	"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png";
+
+const getProfileInfo = async (req, res, next) => {
 	try {
 		const { body } = req;
-		const currentUser = await User.findOne({ userId: body.userId });
+		const userId = currentUserId(req, res, next);
+		const user = await User.findOne({ _id: userId }).select("profile");
+
+		const existingProfile = user && (await Profile.findById(user.profile));
 
 		let result;
-		if (body.profilePicture && body.profilePicture !== defaultProfilePic) {
+		if (
+			body.profilePicture &&
+			body.profilePicture !== defaultProfilePic &&
+			(!existingProfile || existingProfile.profilePicture !== body.profilePicture)
+		) {
 			result = await cloudinary.uploader.upload(body.profilePicture, {
 				folder: "studentManagement",
 			});
+			if (existingProfile)
+				await cloudinary.uploader.destroy(existingProfile.profilePicCloudinaryId);
 		}
+
+		const profileInfo = result
+			? {
+					...body,
+					profilePicture: result.secure_url || "",
+					profilePicCloudinaryId: result.public_id || "",
+			  }
+			: { ...body };
+		return profileInfo;
+	} catch (err) {
+		next(err);
+	}
+};
+
+exports.profileCreateController = async (req, res, next) => {
+	try {
+		const { body } = req;
+		const currentUser = await User.findOne({ userId: body.userId });
+		const profileInfo = await getProfileInfo(req, res, next);
 
 		if (currentUser) {
 			// delete unnecessary properties for teacher
@@ -24,14 +53,6 @@ exports.profileCreateController = async (req, res, next) => {
 				delete body.localGuardianEmail;
 				delete body.localGuardianMobile;
 			}
-
-			const profileInfo = result
-				? {
-						...body,
-						profilePicture: result.secure_url || "",
-						profilePicCloudinaryId: result.public_id || "",
-				  }
-				: { ...body };
 
 			// appending cloudinary key with uploaded image url
 			const newProfile = new Profile(profileInfo);
@@ -67,13 +88,23 @@ exports.profileViewGetController = async (req, res, next) => {
 
 exports.profileUpdatePatchController = async (req, res, next) => {
 	try {
+		const { body } = req;
 		const userId = currentUserId(req, res, next);
-		if (userId) {
-			const user = await User.findOne({ _id: userId }).select("profile");
-			const profile = await Profile.findByIdAndUpdate(user.profile, req.body, { new: true });
-			return res.status(200).json({ message: "Updated", profile });
+		const user = await User.findOne({ _id: userId }).select("profile");
+		if (user) {
+			const existingProfile = await Profile.findById(user.profile);
+			console.log(existingProfile);
 		}
-		res.status(200).json({ message: "Unauthorized" });
+		/////////////////////
+
+		const profileInfo = await getProfileInfo(req, res, next);
+		if (userId) {
+			const profile = await Profile.findByIdAndUpdate(user.profile, profileInfo, {
+				new: true,
+			});
+			return res.status(200).json({ message: "Information updated", success: true, profile });
+		}
+		res.status(200).json({ message: "Unauthorized", success: false });
 	} catch (err) {
 		next(err);
 	}

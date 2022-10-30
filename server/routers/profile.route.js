@@ -10,6 +10,6 @@ const { profileValidator } = require("../validators/profileValidator");
 
 router.post("/create", profileValidator, profileCreateController);
 router.get("/view", profileViewGetController);
-router.patch("/update", profileUpdatePatchController);
+router.patch("/edit", profileValidator, profileUpdatePatchController);
 
 module.exports = router;

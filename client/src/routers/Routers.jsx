@@ -8,7 +8,7 @@ import AvailableCourse from "../pages/availableCourse/AvailableCourse";
 import LiveResult from "../pages/liveResult/LiveResult";
 import Profile from "../pages/profile/Profile";
 import CreateProfile from "../pages/profile/CreateProfile";
-import UpdateProfile from "../pages/profile/UpdateProfile";
+import EditProfile from "../pages/profile/EditProfile";
 import RegisteredCourse from "../pages/registeredCourse/RegisteredCourse";
 import RegisteredStudent from "../pages/registeredStudent/RegisteredStudent";
 import Result from "../pages/result/Result";
@@ -85,7 +85,7 @@ const Routers = () => {
 					path="/profile/edit"
 					element={
 						<LoggedIn>
-							<UpdateProfile />
+							<EditProfile />
 						</LoggedIn>
 					}
 				/>

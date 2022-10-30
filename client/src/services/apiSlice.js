@@ -106,6 +106,17 @@ export const api = createApi({
 			},
 			providesTags: ["profile"],
 		}),
+		editProfile: builder.mutation({
+			query: (updatedData) => ({
+				url: "/profile/edit",
+				method: "PATCH",
+				body: updatedData,
+			}),
+			headers: {
+				"Content-type": "application/json; charset=UTF-8",
+			},
+			invalidatesTags: ["isLogin", "profile"],
+		}),
 		//profile api end
 	}),
 });
@@ -121,4 +132,5 @@ export const {
 	useUpdateCourseMutation,
 	useCreateProfileMutation,
 	useViewProfileQuery,
+	useEditProfileMutation,
 } = api;
