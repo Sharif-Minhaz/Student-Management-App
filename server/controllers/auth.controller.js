@@ -52,6 +52,7 @@ exports.loginController = async (req, res, next) => {
 exports.signupController = async (req, res, next) => {
 	const { primaryName, userId, password } = req.body;
 	const role = /^[0-9]+$/.test(userId) ? "teacher" : "student";
+
 	try {
 		const isFound = await User.exists({ userId });
 		if (isFound)

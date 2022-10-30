@@ -24,16 +24,11 @@ const Profile = () => {
 	if (JSON.stringify(profileData) !== "{}") {
 		return (
 			<Paper sx={{ m: 3, p: 3, mt: "88px", maxWidth: 800, mx: "auto" }} elevation={2}>
-				<Stack
-					direction="row"
-					mb={2}
-					justifyContent="space-between"
-					alignItems="center"
-				>
+				<Stack direction="row" mb={2} justifyContent="space-between" alignItems="center">
 					<Typography variant="h5">PROFILE INFORMATION</Typography>
 					<Link to="/profile/edit">
 						<Button
-						size="small"
+							size="small"
 							startIcon={<Edit />}
 							variant="contained"
 							sx={{ backgroundColor: blue["A400"] }}
@@ -47,8 +42,14 @@ const Profile = () => {
 					<Grid item xs={3}>
 						<Avatar
 							variant="rounded"
-							sx={{ width: "160px", height: "160px", my: 2 }}
-							src={profileData?.profilePicture}
+							sx={{
+								width: "160px",
+								height: "160px",
+								my: 2,
+								boxShadow:
+									"0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
+							}}
+							src={profileData.profilePicture}
 						/>
 					</Grid>
 					<Divider orientation="vertical" flexItem>
@@ -56,10 +57,10 @@ const Profile = () => {
 					</Divider>
 					<Grid item>
 						<Box m={2}>
-							<Typography variant="h6">{profileData.fullName}</Typography>
-							<Typography variant="body1">{profileData.email}</Typography>
+							<Typography variant="h6">{profileData?.fullName}</Typography>
+							<Typography variant="body1">{profileData?.email}</Typography>
 							<Typography variant="body1">
-								{profileData.userId}{" "}
+								{profileData?.userId}{" "}
 								{responseInfo.data?.user?.role === "student"
 									? "(Student Id)"
 									: "(Employee Id)"}
@@ -74,11 +75,11 @@ const Profile = () => {
 				<Divider textAlign="left">
 					<Chip label="PRESENT ADDRESS" />
 				</Divider>
-				<Typography my={3}>{profileData.presentAddress}</Typography>
+				<Typography my={3}>{profileData?.presentAddress}</Typography>
 				<Divider textAlign="left">
 					<Chip label="PERMANENT ADDRESS" />
 				</Divider>
-				<Typography my={3}>{profileData.permanentAddress}</Typography>
+				<Typography my={3}>{profileData?.permanentAddress}</Typography>
 				<Divider />
 				<Typography my={2} variant="h5">
 					CONTACT INFORMATION
@@ -87,10 +88,10 @@ const Profile = () => {
 					<Chip label="EMAIL & MOBILE" />
 				</Divider>
 				<Typography mt={3} mb={1}>
-					<strong>Email:</strong> {profileData.email}
+					<strong>Email:</strong> {profileData?.email}
 				</Typography>
 				<Typography mb={3}>
-					<strong>Mobile:</strong> {profileData.mobile}
+					<strong>Mobile:</strong> {profileData?.mobile}
 				</Typography>
 				{responseInfo.data?.user?.role === "student" && (
 					<>
@@ -102,24 +103,20 @@ const Profile = () => {
 							<Chip label="GUARDIAN INFO" />
 						</Divider>
 						<Typography mt={3} mb={1}>
-							<strong>Name:</strong> {profileData.localGuardianName}
+							<strong>Name:</strong> {profileData?.localGuardianName}
 						</Typography>
 						<Typography mb={1}>
-							<strong>Email:</strong> {profileData.localGuardianEmail}
+							<strong>Email:</strong> {profileData?.localGuardianEmail}
 						</Typography>
 						<Typography mb={3}>
-							<strong>Mobile:</strong> {profileData.localGuardianMobile}
+							<strong>Mobile:</strong> {profileData?.localGuardianMobile}
 						</Typography>
 					</>
 				)}
 			</Paper>
 		);
 	}
-	return (
-		<>
-			<NoProfile />
-		</>
-	);
+	return <NoProfile />;
 };
 
 export default Profile;

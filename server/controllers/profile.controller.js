@@ -4,12 +4,18 @@ const { currentUserId } = require("../middlewares/currentUserId");
 const cloudinary = require("../utils/cloudinary");
 
 exports.profileCreateController = async (req, res, next) => {
+	const defaultProfilePic =
+		"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png";
 	try {
 		const { body } = req;
 		const currentUser = await User.findOne({ userId: body.userId });
-		const result = await cloudinary.uploader.upload(body.profilePicture, {
-			folder: "studentManagement",
-		});
+
+		let result;
+		if (body.profilePicture && body.profilePicture !== defaultProfilePic) {
+			result = await cloudinary.uploader.upload(body.profilePicture, {
+				folder: "studentManagement",
+			});
+		}
 
 		if (currentUser) {
 			// delete unnecessary properties for teacher
@@ -18,12 +24,17 @@ exports.profileCreateController = async (req, res, next) => {
 				delete body.localGuardianEmail;
 				delete body.localGuardianMobile;
 			}
+
+			const profileInfo = result
+				? {
+						...body,
+						profilePicture: result.secure_url || "",
+						profilePicCloudinaryId: result.public_id || "",
+				  }
+				: { ...body };
+
 			// appending cloudinary key with uploaded image url
-			const newProfile = new Profile({
-				...body,
-				profilePicture: result.secure_url,
-				profilePicCloudinaryId: result.public_id,
-			});
+			const newProfile = new Profile(profileInfo);
 			await newProfile.save();
 
 			currentUser.profile = newProfile._id;

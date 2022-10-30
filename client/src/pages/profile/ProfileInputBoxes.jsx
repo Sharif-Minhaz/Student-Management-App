@@ -42,7 +42,15 @@ const ProfileInputBoxes = ({
 					<Box mt={1}>
 						<Stack gap={1}>
 							<Typography variant="body1">Current profile picture</Typography>
-							<Avatar variant="rounded" sx={{ width: "160px", height: "160px" }}>
+							<Avatar
+								variant="rounded"
+								sx={{
+									width: "160px",
+									height: "160px",
+									boxShadow:
+										"0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
+								}}
+							>
 								<img
 									style={{
 										width: "100%",

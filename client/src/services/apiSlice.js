@@ -94,7 +94,7 @@ export const api = createApi({
 				method: "POST",
 				body: profileData,
 			}),
-			invalidatesTags: ["isLogin"],
+			invalidatesTags: ["isLogin", "profile"],
 		}),
 		viewProfile: builder.query({
 			query: () => ({
