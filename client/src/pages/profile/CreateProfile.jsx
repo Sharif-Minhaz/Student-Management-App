@@ -25,12 +25,13 @@ const CreateProfile = () => {
 	document.title = "Student Management | Create-Profile";
 	const navigate = useNavigate();
 
-	const [imgKey, setImgKey] = useState("initial_key_value");
 	const responseInfo = useIsLoggedInQuery();
 	const [createProfile, profileResInfo] = useCreateProfileMutation();
 
+	const [imgKey, setImgKey] = useState("initial_key_value");
 	const [profileData, setProfileData] = useState(initialData);
 	const [cancelProfilePic, setCancelProfilePic] = useState(false);
+	const [profileErrors, setProfileErrors] = useState({});
 
 	const handleClearProfilePic = () => {
 		setCancelProfilePic(false);
@@ -42,13 +43,18 @@ const CreateProfile = () => {
 		if (responseInfo.data?.user?.profile) {
 			navigate("/profile/view", { replace: true });
 		} else setProfileData((prev) => ({ ...prev, userId: responseInfo.data?.user?.userId }));
+		// eslint-disable-next-line
 	}, [responseInfo]);
 
 	useEffect(() => {
-		if (profileResInfo.isSuccess && profileResInfo.data?.success) {
+		if (profileResInfo.isSuccess && !profileResInfo.data?.success) {
+			toast.error("Check the input fields!");
+			setProfileErrors(profileResInfo.data?.error);
+		} else if (profileResInfo.isSuccess && profileResInfo.data?.success) {
 			navigate("/profile/view");
 			toast.success(profileResInfo.data?.message);
 		}
+		// eslint-disable-next-line
 	}, [profileResInfo]);
 
 	const handleOnChange = (e) => {
@@ -71,8 +77,13 @@ const CreateProfile = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		createProfile(profileData);
+		if (profileData.userId === responseInfo.data?.user?.userId) {
+			return createProfile(profileData);
+		}
+		toast.error("Invalid user id!");
 	};
+
+	if (profileResInfo.isLoading) return <Loading />;
 
 	if (responseInfo.isSuccess) {
 		return (
@@ -84,11 +95,10 @@ const CreateProfile = () => {
 				cancelProfilePic={cancelProfilePic}
 				handleClearProfilePic={handleClearProfilePic}
 				imgKey={imgKey}
+				profileErrors={profileErrors}
 			/>
 		);
 	}
-
-	return <Loading />;
 };
 
 export default CreateProfile;

@@ -3,6 +3,7 @@ import {
 	Box,
 	Button,
 	Divider,
+	FormHelperText,
 	InputAdornment,
 	Paper,
 	Stack,
@@ -11,16 +12,21 @@ import {
 } from "@mui/material";
 import { AccountBox, AddCircleOutline, Clear, CloudUpload } from "@mui/icons-material";
 import { useIsLoggedInQuery } from "../../services/apiSlice";
+import Loading from "../../templates/loading/Loading";
 
 const ProfileInputBoxes = ({
+	profileResInfo,
 	profileData,
 	handleOnChange,
 	handleSubmit,
 	cancelProfilePic,
 	handleClearProfilePic,
 	imgKey,
+	profileErrors,
 }) => {
 	const responseInfo = useIsLoggedInQuery();
+
+	if (profileResInfo.isLoading) return <Loading />;
 
 	return (
 		<Box sx={{ m: 3, mt: "88px" }}>
@@ -38,7 +44,11 @@ const ProfileInputBoxes = ({
 							<Typography variant="body1">Current profile picture</Typography>
 							<Avatar variant="rounded" sx={{ width: "160px", height: "160px" }}>
 								<img
-									style={{ width: "100%", height: "100%", objectFit: "cover" }}
+									style={{
+										width: "100%",
+										height: "100%",
+										objectFit: "cover",
+									}}
 									src={profileData.profilePicture}
 									alt="current_profile_pic"
 								/>
@@ -71,28 +81,41 @@ const ProfileInputBoxes = ({
 							label="Upload Profile Picture"
 							name="profilePicture"
 							onChange={handleOnChange}
+							disabled={profileResInfo.isLoading}
 						/>
 					</Box>
 					<Box my={2}>
 						<TextField
 							fullWidth
 							label="Full name"
-							required
 							name="fullName"
 							onChange={handleOnChange}
 							value={profileData.fullName}
+							disabled={profileResInfo.isLoading}
+							error={Boolean(profileResInfo.data?.error?.fullName)}
 						/>
+						{profileResInfo.data?.error?.fullName && (
+							<FormHelperText error id="userId-error-text">
+								{profileResInfo.data?.error?.fullName}
+							</FormHelperText>
+						)}
 					</Box>
 					<Box my={2}>
 						<TextField
 							type="email"
 							fullWidth
 							label="Email address"
-							required
 							name="email"
 							onChange={handleOnChange}
 							value={profileData.email}
+							disabled={profileResInfo.isLoading}
+							error={Boolean(profileResInfo.data?.error?.email)}
 						/>
+						{profileResInfo.data?.error?.email && (
+							<FormHelperText error id="userId-error-email">
+								{profileResInfo.data?.error?.email}
+							</FormHelperText>
+						)}
 					</Box>
 					<Box my={2}>
 						<TextField
@@ -102,6 +125,7 @@ const ProfileInputBoxes = ({
 							name="mobile"
 							onChange={handleOnChange}
 							value={profileData.mobile}
+							disabled={profileResInfo.isLoading}
 						/>
 					</Box>
 					<Box my={2}>
@@ -120,6 +144,7 @@ const ProfileInputBoxes = ({
 							name="presentAddress"
 							onChange={handleOnChange}
 							value={profileData.presentAddress}
+							disabled={profileResInfo.isLoading}
 						/>
 					</Box>
 					<Box my={2}>
@@ -129,6 +154,7 @@ const ProfileInputBoxes = ({
 							name="permanentAddress"
 							onChange={handleOnChange}
 							value={profileData.permanentAddress}
+							disabled={profileResInfo.isLoading}
 						/>
 					</Box>
 					{responseInfo.data?.user?.role === "student" && (
@@ -140,6 +166,7 @@ const ProfileInputBoxes = ({
 									name="localGuardianName"
 									onChange={handleOnChange}
 									value={profileData.localGuardianName}
+									disabled={profileResInfo.isLoading}
 								/>
 							</Box>
 							<Box my={2}>
@@ -150,6 +177,7 @@ const ProfileInputBoxes = ({
 									name="localGuardianEmail"
 									onChange={handleOnChange}
 									value={profileData.localGuardianEmail}
+									disabled={profileResInfo.isLoading}
 								/>
 							</Box>
 							<Box my={2}>
@@ -160,6 +188,7 @@ const ProfileInputBoxes = ({
 									name="localGuardianMobile"
 									onChange={handleOnChange}
 									value={profileData.localGuardianMobile}
+									disabled={profileResInfo.isLoading}
 								/>
 							</Box>
 						</>

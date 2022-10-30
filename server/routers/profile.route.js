@@ -6,7 +6,9 @@ const {
 	profileUpdatePatchController,
 } = require("../controllers/profile.controller");
 
-router.post("/create", profileCreateController);
+const { profileValidator } = require("../validators/profileValidator");
+
+router.post("/create", profileValidator, profileCreateController);
 router.get("/view", profileViewGetController);
 router.patch("/update", profileUpdatePatchController);
 

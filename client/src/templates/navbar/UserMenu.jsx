@@ -2,22 +2,31 @@ import { Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } fr
 import { useState } from "react";
 import { Logout, Dashboard } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useViewProfileQuery } from "../../services/apiSlice";
 
 const UserMenu = ({ handleLogout }) => {
 	const navigate = useNavigate();
+	const responseInfo = useViewProfileQuery();
+	
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
+
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
+
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+
 	return (
 		<>
 			<Tooltip title="Account Settings">
 				<IconButton onClick={handleClick}>
-					<Avatar sx={{ cursor: "pointer" }} />
+					<Avatar
+						sx={{ cursor: "pointer" }}
+						src={responseInfo.data?.userProfile?.profile?.profilePicture}
+					/>
 				</IconButton>
 			</Tooltip>
 			<Menu
@@ -56,7 +65,7 @@ const UserMenu = ({ handleLogout }) => {
 				anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
 			>
 				<MenuItem onClick={() => navigate("/profile/view")}>
-					<Avatar /> Profile
+					<Avatar src={responseInfo.data?.userProfile?.profile?.profilePicture} /> Profile
 				</MenuItem>
 				<MenuItem onClick={() => navigate("/dashboard")}>
 					<ListItemIcon>

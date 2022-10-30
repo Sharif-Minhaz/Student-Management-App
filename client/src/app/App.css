@@ -19,12 +19,12 @@
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: #dbdbdb;
+	background: #b8b8b8;
 	border-radius: 10px;
 }
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-	background: #9d9d9d;
+	background: #cfcfcf;
 }
 
 body {

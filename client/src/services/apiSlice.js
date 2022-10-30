@@ -28,7 +28,7 @@ export const api = createApi({
 					"Content-type": "application/json; charset=UTF-8",
 				},
 			}),
-			invalidatesTags: ["isLogin"],
+			invalidatesTags: ["isLogin", "profile"],
 		}),
 		isLoggedIn: builder.query({
 			query: () => ({
@@ -46,7 +46,7 @@ export const api = createApi({
 					"Content-type": "application/json; charset=UTF-8",
 				},
 			}),
-			invalidatesTags: ["isLogin"],
+			invalidatesTags: ["isLogin", "profile"],
 		}),
 		// auth api end
 		// courses api start
@@ -101,6 +101,9 @@ export const api = createApi({
 				url: "profile/view",
 				method: "GET",
 			}),
+			headers: {
+				"Content-type": "application/json; charset=UTF-8",
+			},
 			providesTags: ["profile"],
 		}),
 		//profile api end
