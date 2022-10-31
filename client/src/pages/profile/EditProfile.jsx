@@ -42,7 +42,6 @@ const EditProfile = () => {
 
 	useEffect(() => {
 		if (profileResInfo.isSuccess && !profileResInfo.data?.success) {
-			console.log(profileResInfo);
 			toast.error("Check the input fields!");
 		} else if (profileResInfo.isSuccess && profileResInfo.data?.success) {
 			navigate("/profile/view");

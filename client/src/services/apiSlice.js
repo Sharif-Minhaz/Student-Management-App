@@ -117,6 +117,15 @@ export const api = createApi({
 			},
 			invalidatesTags: ["isLogin", "profile"],
 		}),
+		allTeacherProfile: builder.query({
+			query: () => ({
+				url: "profile/view/teachers",
+				method: "GET",
+			}),
+			headers: {
+				"Content-type": "application/json; charset=UTF-8",
+			},
+		}),
 		//profile api end
 	}),
 });
@@ -133,4 +142,5 @@ export const {
 	useCreateProfileMutation,
 	useViewProfileQuery,
 	useEditProfileMutation,
+	useAllTeacherProfileQuery,
 } = api;

@@ -88,14 +88,8 @@ exports.profileViewGetController = async (req, res, next) => {
 
 exports.profileUpdatePatchController = async (req, res, next) => {
 	try {
-		const { body } = req;
 		const userId = currentUserId(req, res, next);
 		const user = await User.findOne({ _id: userId }).select("profile");
-		if (user) {
-			const existingProfile = await Profile.findById(user.profile);
-			console.log(existingProfile);
-		}
-		/////////////////////
 
 		const profileInfo = await getProfileInfo(req, res, next);
 		if (userId) {
@@ -104,7 +98,17 @@ exports.profileUpdatePatchController = async (req, res, next) => {
 			});
 			return res.status(200).json({ message: "Information updated", success: true, profile });
 		}
-		res.status(200).json({ message: "Unauthorized", success: false });
+		res.status(200).json({ message: "Unauthorized user", success: false });
+	} catch (err) {
+		next(err);
+	}
+};
+
+exports.getAllTeacherProfileController = async (req, res, next) => {
+	try {
+		const profiles = await Profile.find({ userId: { $regex: /^[0-9]+$/, $options: "g" } });
+
+		res.status(200).json({ success: true, profiles });
 	} catch (err) {
 		next(err);
 	}

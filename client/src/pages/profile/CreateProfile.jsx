@@ -68,7 +68,7 @@ const CreateProfile = () => {
 				setCancelProfilePic(true);
 			};
 			reader.onerror = (error) => {
-				console.log("Error: ", error);
+				console.error("Error: ", error);
 			};
 		} else setProfileData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
