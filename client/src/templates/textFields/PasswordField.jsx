@@ -2,11 +2,7 @@ import { useState } from "react";
 import { InputAdornment, IconButton, OutlinedInput, FormControl, InputLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-const PasswordField = ({
-	responseInfo,
-	data,
-	handleOnchange,
-}) => {
+const PasswordField = ({ responseInfo, data, handleOnchange, name = "password" }) => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const handleClickShowPassword = () => {
@@ -21,12 +17,18 @@ const PasswordField = ({
 		<FormControl variant="outlined" fullWidth>
 			<InputLabel htmlFor="password">Password</InputLabel>
 			<OutlinedInput
-				error={Boolean(responseInfo.data?.error?.password) || responseInfo.data?.isError}
+				error={
+					Boolean(
+						responseInfo.data?.error?.password ||
+							responseInfo.data?.error?.newPassword ||
+							responseInfo.data?.error?.confirmPassword
+					) || responseInfo.data?.isError
+				}
 				id="password"
 				type={showPassword ? "text" : "password"}
 				value={data.password}
 				onChange={handleOnchange}
-				name="password"
+				name={name}
 				label="Password"
 				endAdornment={
 					<InputAdornment position="end">

@@ -81,8 +81,6 @@ const CreateProfile = () => {
 		toast.error("Invalid user id!");
 	};
 
-	if (profileResInfo.isLoading) return <Loading />;
-
 	if (responseInfo.isSuccess) {
 		return (
 			<ProfileInputBoxes

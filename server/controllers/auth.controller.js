@@ -93,6 +93,60 @@ exports.checkIsLoggedInController = async (req, res, next) => {
 	}
 };
 
+exports.checkPasswordPostController = async (req, res, next) => {
+	try {
+		const { password } = req.body;
+		const user = await loggedInUser(req, res, next);
+		const userPassword = await User.findOne({ userId: user.userId }).select("password");
+		if (userPassword) {
+			const isMatched = await bcrypt.compare(password, userPassword.password);
+			return isMatched
+				? res.status(200).json({ success: true })
+				: res.status(200).json({
+						success: false,
+						isError: true,
+						message: "Password didn't matched!",
+				  });
+		}
+		return res.status(200).json({ success: false, message: "Unauthorized" });
+	} catch (err) {
+		next(err);
+	}
+};
+
+exports.changePasswordPostController = async (req, res, next) => {
+	try {
+		const passwords = req.body;
+		const { userId } = await loggedInUser(req, res, next);
+		const userPassword = await User.findOne({ userId }).select("password");
+		if (passwords[0].password !== passwords[1].password) {
+			return res
+				.status(200)
+				.json({ success: false, isError: true, message: "Password didn't matched!" });
+		}
+		if (userPassword) {
+			const isMatched = await bcrypt.compare(passwords[0].password, userPassword.password);
+			if (isMatched)
+				return res
+					.status(200)
+					.json({
+						success: false,
+						isError: true,
+						message: "Old password can't be new password",
+					});
+		}
+		const encryptedPassword = await bcrypt.hash(passwords[0]?.password, 10);
+		const updateUser = await User.findOneAndUpdate(
+			{ userId },
+			{ password: encryptedPassword },
+			{ new: true }
+		);
+		res.status(200).json({ success: true, updateUser, message: "Password changed!" });
+	} catch (err) {
+		next(err);
+	}
+};
+
 exports.logoutController = (req, res, next) => {
 	const isLoggedIn = verifyUser(req, res, next);
 	if (isLoggedIn) {

@@ -32,10 +32,9 @@ const ProfileInputBoxes = ({
 }) => {
 	const responseInfo = useIsLoggedInQuery();
 
-	if (profileResInfo.isLoading) return <Loading />;
-
 	return (
 		<Box sx={{ m: 3, mt: "88px" }}>
+			{profileResInfo.isLoading && <Loading />}
 			<Paper sx={{ maxWidth: "500px", m: "auto", p: 3 }} elevation={2}>
 				<form onSubmit={handleSubmit}>
 					<Stack direction="row" gap={2} alignItems="center" mb={2}>

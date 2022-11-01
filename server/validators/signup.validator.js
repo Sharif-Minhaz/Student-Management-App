@@ -6,7 +6,7 @@ exports.signupValidator = (req, res, next) => {
 
 	error.primaryName = primaryName ? "" : "username is required";
 	if (isInValidId) {
-		error.userId = isInValidId ? "Invalid user student/teacher id" : "";
+		error.userId = isInValidId ? "Invalid student/teacher id" : "";
 	} else {
 		error.userId = userId ? "" : "student/teacher id is required";
 	}

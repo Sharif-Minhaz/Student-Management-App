@@ -10,6 +10,7 @@ import {
 	Typography,
 	Container,
 	Paper,
+	Link as NormalLink,
 	Stack,
 	FormHelperText,
 } from "@mui/material";
@@ -96,6 +97,15 @@ const Login = () => {
 							)}
 						</Grid>
 						<Grid item sx={{ mb: 2 }}>
+							<Typography component="small" fontSize={14}>
+								Forgot password?{" "}
+								<NormalLink
+									href="mailto: faculty@diu.edu.bd?subject=Changing password issue"
+									underline="hover"
+								>
+									Contact faculty
+								</NormalLink>
+							</Typography><br />
 							<Typography component="small" fontSize={14}>
 								Don't have any account? <Link to="/signup">Signup</Link>
 							</Typography>

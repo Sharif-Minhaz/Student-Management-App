@@ -48,6 +48,26 @@ export const api = createApi({
 			}),
 			invalidatesTags: ["isLogin", "profile"],
 		}),
+		checkPassword: builder.mutation({
+			query: (password) => ({
+				url: "auth/check-password",
+				method: "POST",
+				body: password,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+		}),
+		changePassword: builder.mutation({
+			query: (password) => ({
+				url: "auth/change-password",
+				method: "POST",
+				body: password,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+		}),
 		// auth api end
 		// courses api start
 		getAllCourses: builder.query({
@@ -100,10 +120,10 @@ export const api = createApi({
 			query: () => ({
 				url: "profile/view",
 				method: "GET",
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
 			}),
-			headers: {
-				"Content-type": "application/json; charset=UTF-8",
-			},
 			providesTags: ["profile"],
 		}),
 		editProfile: builder.mutation({
@@ -111,20 +131,20 @@ export const api = createApi({
 				url: "/profile/edit",
 				method: "PATCH",
 				body: updatedData,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
 			}),
-			headers: {
-				"Content-type": "application/json; charset=UTF-8",
-			},
 			invalidatesTags: ["isLogin", "profile"],
 		}),
 		allTeacherProfile: builder.query({
 			query: () => ({
 				url: "profile/view/teachers",
 				method: "GET",
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
 			}),
-			headers: {
-				"Content-type": "application/json; charset=UTF-8",
-			},
 		}),
 		//profile api end
 	}),
@@ -143,4 +163,6 @@ export const {
 	useViewProfileQuery,
 	useEditProfileMutation,
 	useAllTeacherProfileQuery,
+	useChangePasswordMutation,
+	useCheckPasswordMutation
 } = api;
