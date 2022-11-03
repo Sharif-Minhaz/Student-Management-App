@@ -52,7 +52,7 @@ const Navbar = ({ setOpenDrawer }) => {
 					{responseInfo.isSuccess && responseInfo.data?.success ? (
 						<>
 							<UserMenu handleLogout={handleLogout} />
-							<Typography color="inherit">
+							<Typography color="inherit" sx={{ userSelect: "none" }}>
 								{responseInfo.isSuccess && responseInfo.data?.user?.primaryName}
 							</Typography>
 						</>

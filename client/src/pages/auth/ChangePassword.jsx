@@ -42,6 +42,7 @@ const ChangePassword = () => {
 		} else if (responseInfoLogout.isSuccess && !responseInfoLogout.data?.success) {
 			toast.error("Something went wrong");
 		}
+		// eslint-disable-next-line
 	}, [responseInfoLogout]);
 
 	const handleSubmit = (e) => {
@@ -78,6 +79,7 @@ const ChangePassword = () => {
 		} else if (responseChangeInfo.isSuccess & responseChangeInfo.data?.isError) {
 			toast.error(responseChangeInfo.data?.message);
 		}
+		// eslint-disable-next-line
 	}, [responseChangeInfo]);
 
 	return (
