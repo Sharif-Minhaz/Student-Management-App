@@ -4,6 +4,7 @@ import CourseTable from "./CourseTable";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import AddCourse from "./AddCourse";
+import Loading from "../../templates/loading/Loading";
 
 const AvailableCourse = () => {
 	document.title = "Student Management | Available-Courses";
@@ -18,15 +19,17 @@ const AvailableCourse = () => {
 	return (
 		<>
 			<Paper sx={{ m: 3, mt: "88px" }}>
-				{responseInfo.isSuccess && (
+				{responseInfo.isSuccess ? (
 					<CourseTable tableData={responseInfo?.data?.allCourses} />
+				) : (
+					<Loading />
 				)}
 			</Paper>
 			{roleInfo.data?.success && roleInfo.data?.user?.role === "teacher" && (
 				<Box sx={{ mx: 3, mb: 3 }}>
 					<Button
 						onClick={handleOpenAddBoxes}
-						sx={{ mb: 3,  }}
+						sx={{ mb: 3 }}
 						variant="outlined"
 						startIcon={<AddIcon />}
 					>

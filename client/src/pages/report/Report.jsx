@@ -32,8 +32,9 @@ const Report = () => {
 		let errorConditions = !errors.name && !errors.email && !errors.message;
 		let inputConditions = inputs.name && inputs.email && inputs.message;
 		if (errorConditions && inputConditions) {
-			toast.success("Message sent");
-			handleSubmit(inputs.event);
+			handleSubmit(inputs.event)
+				.then(() => toast.success("Message sent"))
+				.catch((err) => toast.error("Mail not sent- " + err.message));
 		}
 	}, [errors]);
 

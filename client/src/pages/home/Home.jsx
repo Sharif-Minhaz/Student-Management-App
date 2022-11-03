@@ -12,6 +12,7 @@ const Home = () => {
 			sx={{
 				m: 3,
 				p: 3,
+				px: 4,
 				mt: "88px",
 				backgroundImage: `url(${mainBgImage})`,
 				backgroundPosition: "center",
