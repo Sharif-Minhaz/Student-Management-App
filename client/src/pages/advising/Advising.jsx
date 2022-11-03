@@ -1,12 +1,6 @@
-import {
-	Box,
-	Chip,
-	Divider,
-	Paper,
-	Typography,
-} from "@mui/material";
+import { Box, Chip, Divider, Paper, Typography } from "@mui/material";
 import { useAllTeacherProfileQuery } from "../../services/apiSlice";
-import TeacherMiniProfile from "./TeacherMiniProfile";
+import MiniProfile from "../../templates/MiniProfile";
 
 const Advising = () => {
 	document.title = "Student Management | Advising";
@@ -22,7 +16,7 @@ const Advising = () => {
 					<Chip label="Profile & Basic Info." />
 				</Divider>
 				{profilesInfo.data?.profiles.map((profile) => (
-					<TeacherMiniProfile key={profile._id} profile={profile} />
+					<MiniProfile key={profile._id} profile={profile} />
 				))}
 			</Paper>
 		</Box>

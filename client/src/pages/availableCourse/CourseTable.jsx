@@ -48,7 +48,7 @@ const CourseTable = ({ tableData }) => {
 						<StyledTableCell>Course Teacher</StyledTableCell>
 						<StyledTableCell>Credits</StyledTableCell>
 						<StyledTableCell>Total Number</StyledTableCell>
-						{roleInfo.data?.success && roleInfo.data?.user?.role === "teacher" && (
+						{roleInfo.data?.success && roleInfo.data?.user?.role === "admin" && (
 							<StyledTableCell align="center">Action</StyledTableCell>
 						)}
 					</StyledTableRow>

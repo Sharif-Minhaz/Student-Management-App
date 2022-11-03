@@ -1,0 +1,8 @@
+.MuiTypography-root.MuiTypography-h5 .courses-heading {
+	display: flex;
+    gap: 10px;
+}
+.MuiTypography-root.MuiTypography-h5.course-heading-container {
+    display: flex;
+    justify-content: space-between;
+}

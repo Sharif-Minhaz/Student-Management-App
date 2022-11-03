@@ -105,13 +105,20 @@ const Login = () => {
 								>
 									Contact faculty
 								</NormalLink>
-							</Typography><br />
+							</Typography>
+							<br />
 							<Typography component="small" fontSize={14}>
 								Don't have any account? <Link to="/signup">Signup</Link>
 							</Typography>
 						</Grid>
 					</Grid>
-					<Button type="submit" fullWidth variant="contained" color="primary">
+					<Button
+						disabled={responseInfo.isLoading}
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+					>
 						Login
 					</Button>
 				</form>

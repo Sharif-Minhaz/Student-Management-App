@@ -51,7 +51,11 @@ exports.loginController = async (req, res, next) => {
 
 exports.signupController = async (req, res, next) => {
 	const { primaryName, userId, password } = req.body;
-	const role = /^[0-9]+$/.test(userId) ? "teacher" : "student";
+	const role = /^[0-9]+$/.test(userId)
+		? "teacher"
+		: /^(dcl)\w+/g.test(userId)
+		? "admin"
+		: "student";
 
 	try {
 		const isFound = await User.exists({ userId });
@@ -127,13 +131,11 @@ exports.changePasswordPostController = async (req, res, next) => {
 		if (userPassword) {
 			const isMatched = await bcrypt.compare(passwords[0].password, userPassword.password);
 			if (isMatched)
-				return res
-					.status(200)
-					.json({
-						success: false,
-						isError: true,
-						message: "Old password can't be new password",
-					});
+				return res.status(200).json({
+					success: false,
+					isError: true,
+					message: "Old password can't be new password",
+				});
 		}
 		const encryptedPassword = await bcrypt.hash(passwords[0]?.password, 10);
 		const updateUser = await User.findOneAndUpdate(

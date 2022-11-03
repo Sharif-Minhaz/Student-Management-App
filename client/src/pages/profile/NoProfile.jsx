@@ -4,7 +4,7 @@ import { AccountBox } from "@mui/icons-material";
 
 const NoProfile = () => {
 	return (
-		<Paper sx={{ m: 3, p: 3, mt: "88px" }} elevation={2}>
+		<Paper sx={{ m: 3, p: 3, mt: "88px", maxWidth: "700px", mx: "auto" }} elevation={2}>
 			<Typography variant="h5" mb={2} textAlign="center">
 				Currently, you don't have any profile!
 			</Typography>

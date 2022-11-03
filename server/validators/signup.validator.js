@@ -2,7 +2,7 @@ exports.signupValidator = (req, res, next) => {
 	const { primaryName, userId, password } = req.body;
 
 	const error = {};
-	const isInValidId = /([^0-9-])/g.test(userId);
+	const isInValidId = /([^0-9-])/g.test(userId) && !(/^(dcl)\w+/g.test(userId));
 
 	error.primaryName = primaryName ? "" : "username is required";
 	if (isInValidId) {

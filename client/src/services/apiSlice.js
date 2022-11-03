@@ -146,6 +146,15 @@ export const api = createApi({
 				},
 			}),
 		}),
+		allStudentProfile: builder.query({
+			query: () => ({
+				url: "profile/view/students",
+				method: "GET",
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+		}),
 		//profile api end
 	}),
 });
@@ -163,6 +172,7 @@ export const {
 	useViewProfileQuery,
 	useEditProfileMutation,
 	useAllTeacherProfileQuery,
+	useAllStudentProfileQuery,
 	useChangePasswordMutation,
-	useCheckPasswordMutation
+	useCheckPasswordMutation,
 } = api;

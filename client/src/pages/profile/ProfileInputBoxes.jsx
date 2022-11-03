@@ -214,11 +214,17 @@ const ProfileInputBoxes = ({
 							type="submit"
 							variant="contained"
 							endIcon={<PlaylistAddCheckCircle />}
+							disabled={profileResInfo.isLoading}
 						>
 							Update
 						</Button>
 					) : (
-						<Button type="submit" variant="contained" endIcon={<AddCircleOutline />}>
+						<Button
+							disabled={profileResInfo.isLoading}
+							type="submit"
+							variant="contained"
+							endIcon={<AddCircleOutline />}
+						>
 							Create
 						</Button>
 					)}

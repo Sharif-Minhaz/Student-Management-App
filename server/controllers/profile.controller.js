@@ -113,3 +113,13 @@ exports.getAllTeacherProfileController = async (req, res, next) => {
 		next(err);
 	}
 };
+
+exports.getAllStudentProfileController = async (req, res, next) => {
+	try {
+		const profiles = await Profile.find({ userId: { $regex: /-/, $options: "g" } });
+		
+		res.status(200).json({ success: true, profiles });
+	} catch (err) {
+		next(err);
+	}
+}

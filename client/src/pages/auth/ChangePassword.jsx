@@ -133,7 +133,13 @@ const ChangePassword = () => {
 									)}
 								</Grid>
 							</Grid>
-							<Button type="submit" fullWidth variant="contained" color="primary">
+							<Button
+								disabled={responseChangeInfo.isLoading}
+								type="submit"
+								fullWidth
+								variant="contained"
+								color="primary"
+							>
 								Change Password
 							</Button>
 						</form>
@@ -190,6 +196,7 @@ const ChangePassword = () => {
 								fullWidth
 								variant="contained"
 								color="primary"
+								disabled={responseInfo.isLoading}
 								endIcon={<NavigateNext />}
 							>
 								Next

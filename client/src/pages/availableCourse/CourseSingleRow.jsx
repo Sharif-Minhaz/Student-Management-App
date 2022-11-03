@@ -1,4 +1,4 @@
-import { Close, DeleteOutline, Edit, CheckCircleOutline } from "@mui/icons-material";
+import { Close, DeleteForever, Edit, CheckCircleOutline } from "@mui/icons-material";
 import { Tooltip, Button, TextField, TableCell, tableCellClasses, TableRow } from "@mui/material";
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -136,7 +136,7 @@ const CourseSingleRow = ({ rowData, deleteCourse }) => {
 					rowData.maxNumber
 				)}
 			</StyledTableCell>
-			{roleInfo.data?.success && roleInfo.data?.user?.role === "teacher" && (
+			{roleInfo.data?.success && roleInfo.data?.user?.role === "admin" && (
 				<StyledTableCell align="center">
 					<Tooltip title={updateStatus ? "Cancel" : "Edit"}>
 						<Button
@@ -166,7 +166,7 @@ const CourseSingleRow = ({ rowData, deleteCourse }) => {
 							color="error"
 							onClick={() => deleteCourse(rowData.courseCode)}
 						>
-							<DeleteOutline />
+							<DeleteForever />
 						</Button>
 					</Tooltip>
 				</StyledTableCell>

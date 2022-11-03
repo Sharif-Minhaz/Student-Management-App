@@ -19,6 +19,7 @@ import Loading from "../../templates/loading/Loading";
 import { toast } from "react-toastify";
 import UserIdField from "../../templates/textFields/UserIdField";
 import PasswordField from "../../templates/textFields/PasswordField";
+import ErrorPage from "../errorPage/ErrorPage";
 
 const defaultValue = { primaryName: "", userId: "", password: "" };
 
@@ -50,7 +51,7 @@ const Signup = () => {
 		setSignupData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	};
 
-	if (responseInfo.isError) return <h1>An error occurred {responseInfo.error.error}</h1>;
+	if (responseInfo.isError) return <ErrorPage message={responseInfo.error?.error} />;
 
 	return (
 		<Container component="div" maxWidth="xs" className="auth-base">
@@ -124,7 +125,13 @@ const Signup = () => {
 							</Typography>
 						</Grid>
 					</Grid>
-					<Button type="submit" fullWidth variant="contained" color="primary">
+					<Button
+						disabled={responseInfo.isLoading}
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+					>
 						Sign Up
 					</Button>
 				</form>

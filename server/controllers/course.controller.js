@@ -14,6 +14,9 @@ exports.getAllCoursesController = async (req, res, next) => {
 };
 
 exports.addCoursePostController = async (req, res, next) => {
+	const userType = loggedInUserRole(req, res, next);
+	if (userType !== "admin")
+		return res.status(200).json({ message: "Unauthorized", success: false });
 	try {
 		const newCourse = new AllCourses(req.body);
 		await newCourse.save();
@@ -25,6 +28,9 @@ exports.addCoursePostController = async (req, res, next) => {
 
 exports.deleteCourseController = async (req, res, next) => {
 	const { courseCode } = req.params;
+	const userType = loggedInUserRole(req, res, next);
+	if (userType !== "admin")
+		return res.status(200).json({ message: "Unauthorized", success: false });
 	try {
 		const deletedCourse = await AllCourses.findOneAndDelete({ courseCode: courseCode });
 		res.status(200).json({
@@ -40,6 +46,9 @@ exports.deleteCourseController = async (req, res, next) => {
 exports.updateCourseController = async (req, res, next) => {
 	const { courseId } = req.params;
 	const { courseTeacher, credit, maxNumber } = req.body;
+	const userType = loggedInUserRole(req, res, next);
+	if (userType !== "admin")
+		return res.status(200).json({ message: "Unauthorized", success: false });
 	try {
 		const updatedCourse = await AllCourses.findOneAndUpdate(
 			{ _id: courseId },
