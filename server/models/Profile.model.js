@@ -12,6 +12,7 @@ const profileSchema = new Schema({
 	},
 	mobile: String,
 	userId: { type: String, required: true },
+	designation: String,
 	profilePicture: {
 		type: String,
 		default:

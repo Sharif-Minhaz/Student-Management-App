@@ -5,8 +5,9 @@ const { loggedInUserRole } = require("../middlewares/loggedInUserRole");
 const { currentUserId } = require("../middlewares/currentUserId");
 
 exports.getAllCoursesController = async (req, res, next) => {
+	const { sortType } = req.query;
 	try {
-		const allCourses = await AllCourses.find();
+		const allCourses = await AllCourses.find().sort(sortType);
 		res.status(200).json({ message: "Success", allCourses });
 	} catch (err) {
 		next(err);

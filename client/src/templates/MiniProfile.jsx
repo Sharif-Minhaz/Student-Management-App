@@ -18,7 +18,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { useIsLoggedInQuery } from "../services/apiSlice";
+// import { useIsLoggedInQuery } from "../services/apiSlice";
 
 const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 	return (
@@ -50,6 +50,12 @@ const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 							<strong>{role === "student" ? "Student Id: " : "Employee Id: "}</strong>
 							{profile?.userId}
 						</Typography>
+						{role === "teacher" && (
+							<Typography mb="5px">
+								<strong>Designation: </strong>
+								{profile?.designation}
+							</Typography>
+						)}
 						<Typography mb="5px">
 							<strong>Email Address: </strong>
 							{profile?.email}
@@ -115,7 +121,9 @@ const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 										<TableCell component="th" scope="row">
 											SE304
 										</TableCell>
-										<TableCell align="right">Advanced Database System</TableCell>
+										<TableCell align="right">
+											Advanced Database System
+										</TableCell>
 										<TableCell align="right">Anisul Islam</TableCell>
 										<TableCell align="right">3</TableCell>
 										<TableCell align="right">100</TableCell>

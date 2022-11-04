@@ -116,7 +116,7 @@ exports.getAllTeacherProfileController = async (req, res, next) => {
 
 exports.getAllStudentProfileController = async (req, res, next) => {
 	try {
-		const profiles = await Profile.find({ userId: { $regex: /-/, $options: "g" } });
+		const profiles = await Profile.find({ userId: { $regex: /-/, $options: "g" } }).sort("userId");
 		
 		res.status(200).json({ success: true, profiles });
 	} catch (err) {

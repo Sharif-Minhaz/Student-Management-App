@@ -22,7 +22,7 @@ const EditProfile = () => {
 	const [updateProfile, profileResInfo] = useEditProfileMutation();
 
 	const [imgKey, setImgKey] = useState("initial_key_value");
-	const [profileData, setProfileData] = useState({});
+	const [profileData, setProfileData] = useState(currentProfileInfo.data?.userProfile?.profile);
 	const [cancelProfilePic, setCancelProfilePic] = useState(false);
 
 	const handleClearProfilePic = () => {

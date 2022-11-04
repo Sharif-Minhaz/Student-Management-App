@@ -20,12 +20,17 @@ import "./availableCourse.css";
 const AvailableCourse = () => {
 	document.title = "Student Management | Available-Courses";
 	const [addBox, setAddBox] = useState(false);
-	const responseInfo = useGetAllCoursesQuery();
+	const [sortType, setSortType] = useState("auto");
+	const responseInfo = useGetAllCoursesQuery(sortType);
 	const roleInfo = useIsLoggedInQuery();
 
 	const handleOpenAddBoxes = () => {
 		setAddBox((prev) => !prev);
 	};
+
+	const handleOnSelect = (e) => {
+		setSortType(e.target.value);
+	}
 
 	return (
 		<>
@@ -42,14 +47,16 @@ const AvailableCourse = () => {
 							<Select
 								labelId="demo-simple-select-label"
 								id="demo-simple-select"
-								// value={age}
+								value={sortType}
 								label="Sort"
 								size="small"
-								// onChange={handleChange}
+								name="sort"
+								onChange={handleOnSelect}
 							>
-								<MenuItem value="name">Course Name</MenuItem>
-								<MenuItem value="credits">Credits</MenuItem>
-								<MenuItem value="number">Total Number</MenuItem>
+								<MenuItem value="auto">Auto</MenuItem>
+								<MenuItem value="courseName">Course (A-Z)</MenuItem>
+								<MenuItem value="credit">Credits (1-10)</MenuItem>
+								<MenuItem value="maxNumber">Number (1-100)</MenuItem>
 							</Select>
 						</FormControl>
 					</Box>

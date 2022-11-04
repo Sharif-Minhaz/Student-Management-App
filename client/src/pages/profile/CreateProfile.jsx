@@ -1,6 +1,5 @@
 import "./profile.css";
 import { useCreateProfileMutation, useIsLoggedInQuery } from "../../services/apiSlice";
-import Loading from "../../templates/loading/Loading";
 import { useEffect, useState } from "react";
 import ProfileInputBoxes from "./ProfileInputBoxes";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +13,7 @@ const initialData = {
 	email: "",
 	mobile: "",
 	userId: "",
+	designation:"",
 	presentAddress: "",
 	permanentAddress: "",
 	localGuardianName: "",

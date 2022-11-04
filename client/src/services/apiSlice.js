@@ -71,8 +71,8 @@ export const api = createApi({
 		// auth api end
 		// courses api start
 		getAllCourses: builder.query({
-			query: () => ({
-				url: "courses/all",
+			query: (sortType) => ({
+				url: `courses/all?sortType=${sortType}`,
 				method: "GET",
 			}),
 			providesTags: ["allCourses"],

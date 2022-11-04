@@ -65,6 +65,9 @@ const Profile = () => {
 									? "(Student Id)"
 									: "(Employee Id)"}
 							</Typography>
+							{responseInfo.data?.user?.role === "teacher" && (
+								<Typography>{profileData?.designation}</Typography>
+							)}
 						</Box>
 					</Grid>
 				</Grid>

@@ -3,9 +3,13 @@ import {
 	Box,
 	Button,
 	Divider,
+	FormControl,
 	FormHelperText,
 	InputAdornment,
+	InputLabel,
+	MenuItem,
 	Paper,
+	Select,
 	Stack,
 	TextField,
 	Typography,
@@ -19,6 +23,16 @@ import {
 } from "@mui/icons-material";
 import { useIsLoggedInQuery } from "../../services/apiSlice";
 import Loading from "../../templates/loading/Loading";
+
+const designations = [
+	"Lecturer",
+	"Senior Lecturer",
+	"Master Lecturer",
+	"Assistant Professor",
+	"Associate Professor",
+	"Professor",
+	"Head of Department",
+];
 
 const ProfileInputBoxes = ({
 	profileResInfo,
@@ -152,6 +166,28 @@ const ProfileInputBoxes = ({
 							name="userId"
 						/>
 					</Box>
+					{responseInfo.isSuccess && responseInfo.data?.user?.role === "teacher" && (
+						<Box my={2}>
+							<FormControl fullWidth>
+								<InputLabel id="demo-simple-select-label">Designation</InputLabel>
+								<Select
+									value={profileData?.designation}
+									labelId="demo-simple-select-label"
+									id="demo-simple-select"
+									label="Designation"
+									name="designation"
+									onChange={handleOnChange}
+									disabled={profileResInfo.isLoading}
+								>
+									{designations.map((option, i) => (
+										<MenuItem key={i} value={option}>
+											{option}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</Box>
+					)}
 					<Box my={2}>
 						<TextField
 							fullWidth
