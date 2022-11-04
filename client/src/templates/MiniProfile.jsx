@@ -4,6 +4,7 @@ import {
 	AccordionSummary,
 	Avatar,
 	Box,
+	Button,
 	Chip,
 	Divider,
 	Paper,
@@ -18,13 +19,50 @@ import {
 	Typography,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-// import { useIsLoggedInQuery } from "../services/apiSlice";
+import { useDeleteStudentProfileMutation } from "../services/apiSlice";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import Loading from './loading/Loading';
 
 const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
+	const [deleteProfile, responseInfo] = useDeleteStudentProfileMutation();
+
+	const handleDeleteProfile = (id) => {
+		deleteProfile(id);
+	};
+
+	useEffect(() => {
+		if (responseInfo.isSuccess && responseInfo.data?.success) {
+			toast.success(responseInfo.data?.message);
+		}
+	}, [responseInfo]);
+
+	if(responseInfo.isLoading) {
+		return <Loading />
+	}
 	return (
-		<Accordion elevation={2}>
+		<Accordion elevation={2} TransitionProps={{ unmountOnExit: true }}>
 			<AccordionSummary expandIcon={<ExpandMore />} aria-controls="panel1a-content">
-				<Typography>{profile?.fullName}</Typography>
+				<Stack
+					sx={{ width: "100%" }}
+					direction="row"
+					alignItems="center"
+					justifyContent="space-between"
+				>
+					<Typography>{profile?.fullName}</Typography>
+					{role === "student" && (
+						<Button
+							onClick={() => handleDeleteProfile(profile?._id)}
+							size="small"
+							color="error"
+							variant="outlined"
+							sx={{ mr: 2 }}
+							disabled={responseInfo.isLoading}
+						>
+							Unregister
+						</Button>
+					)}
+				</Stack>
 			</AccordionSummary>
 			<AccordionDetails>
 				<Divider />

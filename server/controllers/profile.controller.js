@@ -71,6 +71,17 @@ exports.profileCreateController = async (req, res, next) => {
 	}
 };
 
+exports.deleteProfileController = async (req, res, next) => {
+	const { id } = req.params;
+	try {
+		const deletedProfile = await Profile.findByIdAndDelete(id);
+		await cloudinary.uploader.destroy(deletedProfile.profilePicCloudinaryId);
+		res.status(200).json({ success: true, message: "Unregistered student", deletedProfile });
+	} catch (err) {
+		next(err);
+	}
+};
+
 exports.profileViewGetController = async (req, res, next) => {
 	try {
 		const userId = currentUserId(req, res, next);
@@ -78,6 +89,10 @@ exports.profileViewGetController = async (req, res, next) => {
 			const userProfile = await User.findOne({ _id: userId })
 				.populate("profile")
 				.select("primaryName courses userId profile");
+			if (!userProfile.profile) {
+				await User.findOneAndUpdate({ _id: userId }, { profile: null });
+				return res.status(200).json({ userProfile, message: "Empty" });
+			}
 			return res.status(200).json({ userProfile, message: "Success" }); // sending profile with basic user information
 		}
 		res.status(200).json({ message: "Unauthorized" });
@@ -116,10 +131,12 @@ exports.getAllTeacherProfileController = async (req, res, next) => {
 
 exports.getAllStudentProfileController = async (req, res, next) => {
 	try {
-		const profiles = await Profile.find({ userId: { $regex: /-/, $options: "g" } }).sort("userId");
-		
+		const profiles = await Profile.find({ userId: { $regex: /-/, $options: "g" } }).sort(
+			"userId"
+		);
+
 		res.status(200).json({ success: true, profiles });
 	} catch (err) {
 		next(err);
 	}
-}
+};
