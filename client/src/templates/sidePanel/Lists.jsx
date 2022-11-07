@@ -25,11 +25,14 @@ import {
 import { useIsLoggedInQuery, useLogoutMutation } from "../../services/apiSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const Lists = ({ setOpenDrawer }) => {
 	const navigate = useNavigate();
 	const responseInfo = useIsLoggedInQuery();
 	const [logout, responseInfoLogout] = useLogoutMutation();
+
+	const [role, setRole] = useState("");
 
 	useEffect(() => {
 		if (responseInfoLogout.isSuccess && responseInfoLogout.data?.success) {
@@ -38,7 +41,13 @@ const Lists = ({ setOpenDrawer }) => {
 		} else if (responseInfoLogout.isSuccess && !responseInfoLogout.data?.success) {
 			toast.error("Something went wrong");
 		}
-	}, [responseInfoLogout]);
+		// set current role
+		if (responseInfo.isSuccess && responseInfo.data?.user?.role) {
+			setRole(responseInfo.data?.user?.role);
+		} else if (responseInfo.isSuccess && !responseInfo.data?.user?.role) {
+			setRole("");
+		}
+	}, [responseInfoLogout, responseInfo]);
 
 	const handleLogout = async () => {
 		await logout();
@@ -52,7 +61,7 @@ const Lists = ({ setOpenDrawer }) => {
 					icon={<Home />}
 					path="/"
 				/>
-				{responseInfo.data?.success && responseInfo.data?.user && (
+				{role && (
 					<SingleListItem
 						setOpenDrawer={setOpenDrawer}
 						text="Dashboard"
@@ -60,7 +69,7 @@ const Lists = ({ setOpenDrawer }) => {
 						path="/dashboard"
 					/>
 				)}
-				{responseInfo.data?.success && responseInfo.data?.user && (
+				{role && (
 					<SingleListItem
 						setOpenDrawer={setOpenDrawer}
 						text="Profile"
@@ -68,12 +77,20 @@ const Lists = ({ setOpenDrawer }) => {
 						path="/profile/view"
 					/>
 				)}
-				{responseInfo.data?.success && responseInfo.data?.user?.role === "student" && (
+				{role === "student" && (
 					<SingleListItem
 						setOpenDrawer={setOpenDrawer}
 						text="Advising"
 						icon={<SupervisedUserCircle />}
 						path="/advising"
+					/>
+				)}
+				{role === "admin" && (
+					<SingleListItem
+						setOpenDrawer={setOpenDrawer}
+						text="Assigned Teachers"
+						icon={<SupervisedUserCircle />}
+						path="/assigned-teachers"
 					/>
 				)}
 				<SingleListItem
@@ -82,7 +99,7 @@ const Lists = ({ setOpenDrawer }) => {
 					icon={<AutoStories />}
 					path="/available-courses"
 				/>
-				{responseInfo.data?.success && responseInfo.data?.user?.role === "student" && (
+				{role === "student" && (
 					<SingleListItem
 						setOpenDrawer={setOpenDrawer}
 						text="Live Result"
@@ -90,7 +107,7 @@ const Lists = ({ setOpenDrawer }) => {
 						path="/live-result"
 					/>
 				)}
-				{responseInfo.data?.success && responseInfo.data?.user?.role === "student" && (
+				{role === "student" && (
 					<SingleListItem
 						setOpenDrawer={setOpenDrawer}
 						text="Registered Courses"
@@ -98,7 +115,7 @@ const Lists = ({ setOpenDrawer }) => {
 						path="/registered-courses"
 					/>
 				)}
-				{responseInfo.data?.success && responseInfo.data?.user?.role === "teacher" && (
+				{role === "teacher" && (
 					<SingleListItem
 						setOpenDrawer={setOpenDrawer}
 						text="Registered Students"
@@ -115,7 +132,7 @@ const Lists = ({ setOpenDrawer }) => {
 			</List>
 			<Divider />
 			<List>
-				{!responseInfo.data?.success && !responseInfo.data?.user && (
+				{!role && (
 					<SingleListItem
 						setOpenDrawer={setOpenDrawer}
 						text="Login"
@@ -123,7 +140,7 @@ const Lists = ({ setOpenDrawer }) => {
 						path="/login"
 					/>
 				)}
-				{responseInfo.data?.success && responseInfo.data?.user && (
+				{role && (
 					<SingleListItem
 						setOpenDrawer={setOpenDrawer}
 						text="Change Password"
@@ -137,7 +154,7 @@ const Lists = ({ setOpenDrawer }) => {
 					icon={<Flag />}
 					path="/report"
 				/>
-				{responseInfo.data?.success && responseInfo.data?.user && (
+				{role && (
 					<ListItem
 						disablePadding
 						onClick={() => {

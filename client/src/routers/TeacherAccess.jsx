@@ -1,11 +1,15 @@
 import { Navigate } from "react-router-dom";
 import { useIsLoggedInQuery } from "../services/apiSlice";
-import Loading from './../templates/loading/Loading';
+import Loading from "./../templates/loading/Loading";
 
 const TeacherAccess = ({ children }) => {
 	const responseInfo = useIsLoggedInQuery();
 
-	if (responseInfo.isSuccess && responseInfo.data?.user?.role === "teacher") return children;
+	if (
+		responseInfo.isSuccess &&
+		(responseInfo.data?.user?.role === "teacher" || responseInfo.data?.user?.role === "admin")
+	)
+		return children;
 	else if (responseInfo.isLoading) return <Loading />;
 	return <Navigate to="/" replace />;
 };

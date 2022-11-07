@@ -145,7 +145,7 @@ export const api = createApi({
 					"Content-type": "application/json; charset=UTF-8",
 				},
 			}),
-			invalidatesTags: ["allStudentProfile", "profile"],
+			invalidatesTags: ["allStudentProfile", "profile", "isLogin"],
 		}),
 		allTeacherProfile: builder.query({
 			query: () => ({
@@ -165,6 +165,15 @@ export const api = createApi({
 				},
 			}),
 			providesTags: ["allStudentProfile"],
+		}),
+		assignAdvisingRange: builder.mutation({
+			query: (range) => {
+				return {
+					url: "profile/assign/advising",
+					method: "PATCH",
+					body: range,
+				};
+			},
 		}),
 		//profile api end
 	}),
@@ -187,4 +196,5 @@ export const {
 	useChangePasswordMutation,
 	useCheckPasswordMutation,
 	useDeleteStudentProfileMutation,
+	useAssignAdvisingRangeMutation,
 } = api;

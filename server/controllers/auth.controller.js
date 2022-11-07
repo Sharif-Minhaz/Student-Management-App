@@ -92,9 +92,8 @@ exports.checkIsLoggedInController = async (req, res, next) => {
 	const user = await loggedInUser(req, res, next);
 	if (isLoggedIn) {
 		return res.status(200).json({ success: true, user });
-	} else {
-		res.status(200).json({ success: false });
 	}
+	return res.status(200).json({ success: false });
 };
 
 exports.checkPasswordPostController = async (req, res, next) => {

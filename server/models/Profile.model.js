@@ -13,6 +13,7 @@ const profileSchema = new Schema({
 	mobile: String,
 	userId: { type: String, required: true },
 	designation: String,
+	advisingRange: String,
 	profilePicture: {
 		type: String,
 		default:

@@ -7,7 +7,11 @@ import {
 	Button,
 	Chip,
 	Divider,
+	FormControl,
+	InputLabel,
+	MenuItem,
 	Paper,
+	Select,
 	Stack,
 	Table,
 	TableBody,
@@ -19,16 +23,32 @@ import {
 	Typography,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { useDeleteStudentProfileMutation } from "../services/apiSlice";
-import { useEffect } from "react";
+import {
+	useAssignAdvisingRangeMutation,
+	useDeleteStudentProfileMutation,
+} from "../services/apiSlice";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import Loading from './loading/Loading';
+import Loading from "./loading/Loading";
 
 const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 	const [deleteProfile, responseInfo] = useDeleteStudentProfileMutation();
+	const [assignAdvisingRange, assigningInfo] = useAssignAdvisingRangeMutation();
+	const [range, setRange] = useState(profile?.advisingRange ?? "");
 
 	const handleDeleteProfile = (id) => {
 		deleteProfile(id);
+	};
+
+	const handleSubmit = () => {
+		assignAdvisingRange({ range, id: profile._id })
+			.unwrap()
+			.then((payload) => toast.success(payload.message))
+			.catch((error) => toast.error(error.message));
+	};
+
+	const handleOnChange = (e) => {
+		setRange(e.target.value);
 	};
 
 	useEffect(() => {
@@ -37,8 +57,8 @@ const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 		}
 	}, [responseInfo]);
 
-	if(responseInfo.isLoading) {
-		return <Loading />
+	if (responseInfo.isLoading) {
+		return <Loading />;
 	}
 	return (
 		<Accordion elevation={2} TransitionProps={{ unmountOnExit: true }}>
@@ -166,7 +186,12 @@ const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 										<TableCell align="right">3</TableCell>
 										<TableCell align="right">100</TableCell>
 										<TableCell align="right">
-											<TextField type="number" />
+											<TextField
+												size="small"
+												type="number"
+												inputProps={{ min: 0, max: 100 }}
+												sx={{ width: "80px" }}
+											/>
 										</TableCell>
 									</TableRow>
 									{/* ))} */}
@@ -174,6 +199,36 @@ const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 							</Table>
 						</TableContainer>
 					</>
+				)}
+				{role === "admin" && (
+					<Stack direction="row" gap={1}>
+						<FormControl fullWidth size="small">
+							<InputLabel id="demo-simple-select-label">Advising range</InputLabel>
+							<Select
+								labelId="demo-simple-select-label"
+								id="demo-simple-select"
+								name="advisingRange"
+								value={range}
+								label="Advising range"
+								onChange={handleOnChange}
+								disabled={assigningInfo.isLoading}
+							>
+								<MenuItem value="601-700">201-35-601 to 201-35-700</MenuItem>
+								<MenuItem value="701-800">201-35-701 to 201-35-800</MenuItem>
+								<MenuItem value="901-1000">201-35-901 to 201-35-1000</MenuItem>
+								<MenuItem value="2900-3000">201-35-2900 to 201-35-3000</MenuItem>
+								<MenuItem value="3001-3150">201-35-3001 to 201-35-3150</MenuItem>
+								<MenuItem value="3151-3300">201-35-3151 to 201-35-3300</MenuItem>
+							</Select>
+						</FormControl>
+						<Button
+							onClick={handleSubmit}
+							variant="contained"
+							disabled={assigningInfo.isLoading}
+						>
+							ADD
+						</Button>
+					</Stack>
 				)}
 			</AccordionDetails>
 		</Accordion>

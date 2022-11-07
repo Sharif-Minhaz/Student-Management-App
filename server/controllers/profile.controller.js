@@ -2,15 +2,25 @@ const User = require("../models/User.model");
 const Profile = require("../models/Profile.model");
 const { currentUserId } = require("../middlewares/currentUserId");
 const cloudinary = require("../utils/cloudinary");
+const { loggedInUser } = require("../middlewares/loggedInUser");
 
 const defaultProfilePic =
 	"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png";
 
 const getProfileInfo = async (req, res, next) => {
 	try {
-		const { body } = req;
+		const body = { ...req.body };
 		const userId = currentUserId(req, res, next);
 		const user = await User.findOne({ _id: userId }).select("profile");
+
+		const currentUser = await User.findOne({ userId: body.userId });
+
+		// delete unnecessary properties for teacher and admin
+		if (currentUser && currentUser.role !== "student") {
+			delete body.localGuardianName;
+			delete body.localGuardianEmail;
+			delete body.localGuardianMobile;
+		} else if (currentUser && currentUser.role !== "teacher") delete body.advisingRange;
 
 		const existingProfile = user && (await Profile.findById(user.profile));
 
@@ -42,19 +52,11 @@ const getProfileInfo = async (req, res, next) => {
 
 exports.profileCreateController = async (req, res, next) => {
 	try {
-		const { body } = req;
-		const currentUser = await User.findOne({ userId: body.userId });
+		const body = { ...req.body };
 		const profileInfo = await getProfileInfo(req, res, next);
+		const currentUser = await User.findOne({ userId: body.userId });
 
 		if (currentUser) {
-			// delete unnecessary properties for teacher
-			if (currentUser.role === "teacher") {
-				delete body.localGuardianName;
-				delete body.localGuardianEmail;
-				delete body.localGuardianMobile;
-			}
-
-			// appending cloudinary key with uploaded image url
 			const newProfile = new Profile(profileInfo);
 			await newProfile.save();
 
@@ -75,7 +77,8 @@ exports.deleteProfileController = async (req, res, next) => {
 	const { id } = req.params;
 	try {
 		const deletedProfile = await Profile.findByIdAndDelete(id);
-		await cloudinary.uploader.destroy(deletedProfile.profilePicCloudinaryId);
+		if (deletedProfile.profilePicCloudinaryId)
+			await cloudinary.uploader.destroy(deletedProfile.profilePicCloudinaryId);
 		res.status(200).json({ success: true, message: "Unregistered student", deletedProfile });
 	} catch (err) {
 		next(err);
@@ -136,6 +139,38 @@ exports.getAllStudentProfileController = async (req, res, next) => {
 		);
 
 		res.status(200).json({ success: true, profiles });
+	} catch (err) {
+		next(err);
+	}
+};
+
+exports.assignAdvisingRangeToProfile = async (req, res, next) => {
+	const { range, id } = req.body;
+	
+	try {
+		const loggedInUserInfo = await loggedInUser(req, res, next);
+
+		if (loggedInUserInfo) {
+			const updatedProfile = await Profile.findByIdAndUpdate(
+				id,
+				{
+					advisingRange: range,
+				},
+				{ new: true }
+			);
+
+			if (updatedProfile) {
+				return res.status(200).json({
+					message: "Set advising range successfully",
+					success: true,
+					updatedProfile,
+				});
+			}
+		}
+
+		return res
+			.status(200)
+			.json({ message: "Profile not found to update range!", success: false });
 	} catch (err) {
 		next(err);
 	}
