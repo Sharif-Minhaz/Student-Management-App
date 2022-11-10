@@ -16,7 +16,12 @@ const Advising = () => {
 					<Chip label="Profile & Basic Info." />
 				</Divider>
 				{profilesInfo.data?.profiles.map((profile) => (
-					<MiniProfile key={profile._id} role="admin" profile={profile} />
+					<MiniProfile
+						key={profile._id}
+						role="admin"
+						profile={profile}
+						advisingRanges={profilesInfo.data?.advisingRanges}
+					/>
 				))}
 			</Paper>
 		</Box>

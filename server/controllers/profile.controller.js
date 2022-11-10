@@ -124,9 +124,12 @@ exports.profileUpdatePatchController = async (req, res, next) => {
 
 exports.getAllTeacherProfileController = async (req, res, next) => {
 	try {
+		const advisingRanges = [];
 		const profiles = await Profile.find({ userId: { $regex: /^[0-9]+$/, $options: "g" } });
-
-		res.status(200).json({ success: true, profiles });
+		profiles.forEach((range) => {
+			if (range.advisingRange !== "") advisingRanges.push(range.advisingRange);
+		});
+		res.status(200).json({ success: true, profiles, advisingRanges });
 	} catch (err) {
 		next(err);
 	}
@@ -146,7 +149,7 @@ exports.getAllStudentProfileController = async (req, res, next) => {
 
 exports.assignAdvisingRangeToProfile = async (req, res, next) => {
 	const { range, id } = req.body;
-	
+
 	try {
 		const loggedInUserInfo = await loggedInUser(req, res, next);
 
@@ -159,13 +162,21 @@ exports.assignAdvisingRangeToProfile = async (req, res, next) => {
 				{ new: true }
 			);
 
+			const allRange = await Profile.find({
+				userId: { $regex: /^[0-9]+$/, $options: "g" },
+			}).select("advisingRange");
+
 			if (updatedProfile) {
 				return res.status(200).json({
 					message: "Set advising range successfully",
 					success: true,
 					updatedProfile,
+					
 				});
 			}
+			return res
+				.status(200)
+				.json({ success: false, message: "Range not updated" });
 		}
 
 		return res

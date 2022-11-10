@@ -31,10 +31,10 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "./loading/Loading";
 
-const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
+const MiniProfile = ({ profile, role = "teacher", advisingRanges = [] }) => {
 	const [deleteProfile, responseInfo] = useDeleteStudentProfileMutation();
 	const [assignAdvisingRange, assigningInfo] = useAssignAdvisingRangeMutation();
-	const [range, setRange] = useState(profile?.advisingRange ?? "");
+	const [range, setRange] = useState(profile?.advisingRange || "");
 
 	const handleDeleteProfile = (id) => {
 		deleteProfile(id);
@@ -60,8 +60,9 @@ const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 	if (responseInfo.isLoading) {
 		return <Loading />;
 	}
+
 	return (
-		<Accordion elevation={2} TransitionProps={{ unmountOnExit: true }}>
+		<Accordion elevation={2}>
 			<AccordionSummary expandIcon={<ExpandMore />} aria-controls="panel1a-content">
 				<Stack
 					sx={{ width: "100%" }}
@@ -213,12 +214,45 @@ const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 								onChange={handleOnChange}
 								disabled={assigningInfo.isLoading}
 							>
-								<MenuItem value="601-700">201-35-601 to 201-35-700</MenuItem>
-								<MenuItem value="701-800">201-35-701 to 201-35-800</MenuItem>
-								<MenuItem value="901-1000">201-35-901 to 201-35-1000</MenuItem>
-								<MenuItem value="2900-3000">201-35-2900 to 201-35-3000</MenuItem>
-								<MenuItem value="3001-3150">201-35-3001 to 201-35-3150</MenuItem>
-								<MenuItem value="3151-3300">201-35-3151 to 201-35-3300</MenuItem>
+								<MenuItem value="" selected>
+									--Select student range--
+								</MenuItem>
+								<MenuItem
+									disabled={advisingRanges.includes("601-700")}
+									value="601-700"
+								>
+									201-35-601 to 201-35-700
+								</MenuItem>
+								<MenuItem
+									disabled={advisingRanges.includes("701-800")}
+									value="701-800"
+								>
+									201-35-701 to 201-35-800
+								</MenuItem>
+								<MenuItem
+									disabled={advisingRanges.includes("901-1000")}
+									value="901-1000"
+								>
+									201-35-901 to 201-35-1000
+								</MenuItem>
+								<MenuItem
+									disabled={advisingRanges.includes("2900-3000")}
+									value="2900-3000"
+								>
+									201-35-2900 to 201-35-3000
+								</MenuItem>
+								<MenuItem
+									disabled={advisingRanges.includes("3001-3150")}
+									value="3001-3150"
+								>
+									201-35-3001 to 201-35-3150
+								</MenuItem>
+								<MenuItem
+									disabled={advisingRanges.includes("3151-3300")}
+									value="3151-3300"
+								>
+									201-35-3151 to 201-35-3300
+								</MenuItem>
 							</Select>
 						</FormControl>
 						<Button
@@ -235,4 +269,4 @@ const TeacherMiniProfile = ({ profile, role = "teacher" }) => {
 	);
 };
 
-export default TeacherMiniProfile;
+export default MiniProfile;

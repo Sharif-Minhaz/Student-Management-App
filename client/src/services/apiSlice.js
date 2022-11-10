@@ -6,7 +6,7 @@ export const api = createApi({
 		baseUrl: "http://localhost:8080/",
 		credentials: "include",
 	}),
-	tagTypes: ["isLogin", "allCourses", "profile", "allStudentProfile"],
+	tagTypes: ["isLogin", "allCourses", "profile", "allStudentProfile", "allTeacherProfile"],
 	endpoints: (builder) => ({
 		// auth api start
 		signup: builder.mutation({
@@ -135,7 +135,7 @@ export const api = createApi({
 					"Content-type": "application/json; charset=UTF-8",
 				},
 			}),
-			invalidatesTags: ["isLogin", "profile"],
+			invalidatesTags: ["isLogin", "profile", "allTeacherProfile", "allStudentProfile"],
 		}),
 		deleteStudentProfile: builder.mutation({
 			query: (id) => ({
@@ -155,6 +155,7 @@ export const api = createApi({
 					"Content-type": "application/json; charset=UTF-8",
 				},
 			}),
+			providesTags: ["allTeacherProfile"],
 		}),
 		allStudentProfile: builder.query({
 			query: () => ({
@@ -174,6 +175,7 @@ export const api = createApi({
 					body: range,
 				};
 			},
+			invalidatesTags: ["allTeacherProfile"],
 		}),
 		//profile api end
 	}),
