@@ -148,8 +148,8 @@ export const api = createApi({
 			invalidatesTags: ["allStudentProfile", "profile", "isLogin"],
 		}),
 		allTeacherProfile: builder.query({
-			query: () => ({
-				url: "profile/view/teachers",
+			query: (range) => ({
+				url: `profile/view/teachers?range=${range}`,
 				method: "GET",
 				headers: {
 					"Content-type": "application/json; charset=UTF-8",

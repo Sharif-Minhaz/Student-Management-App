@@ -124,12 +124,29 @@ exports.profileUpdatePatchController = async (req, res, next) => {
 };
 
 exports.getAllTeacherProfileController = async (req, res, next) => {
+	const range = Number(req.query?.range?.split("-")[2]);
+	const advisingRanges = [];
+
 	try {
-		const advisingRanges = [];
+		const currentUser = loggedInUserRole(req, res, next);
 		const profiles = await Profile.find({ userId: { $regex: /^[0-9]+$/, $options: "g" } });
 		profiles.forEach((range) => {
 			if (range.advisingRange !== "") advisingRanges.push(range.advisingRange);
 		});
+
+		if (currentUser === "student") {
+			const filteredProfiles = profiles.filter((profile) => {
+				let advising = profile.advisingRange?.split("-"); // 201-35-3001 <- id
+				console.log(advising, range);
+				console.log(range <= Number(advising[1]) && range >= Number(advising[0]));
+				return range <= Number(advising[1]) && range >= Number(advising[0]);
+			});
+			console.log(filteredProfiles);
+			return res
+				.status(200)
+				.json({ success: true, profiles: filteredProfiles, advisingRanges });
+		}
+
 		res.status(200).json({ success: true, profiles, advisingRanges });
 	} catch (err) {
 		next(err);
@@ -138,6 +155,7 @@ exports.getAllTeacherProfileController = async (req, res, next) => {
 
 exports.getAllStudentProfileController = async (req, res, next) => {
 	const ranges = req.query?.range?.split("-"); // 100-300 <- range
+
 	try {
 		const currentUser = loggedInUserRole(req, res, next);
 
