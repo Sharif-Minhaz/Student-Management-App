@@ -3,6 +3,7 @@ const Profile = require("../models/Profile.model");
 const { currentUserId } = require("../middlewares/currentUserId");
 const cloudinary = require("../utils/cloudinary");
 const { loggedInUser } = require("../middlewares/loggedInUser");
+const { loggedInUserRole } = require("../middlewares/loggedInUserRole");
 
 const defaultProfilePic =
 	"https://res.cloudinary.com/hostingimagesservice/image/upload/v1664446734/studentManagement/empty-user.png";
@@ -136,12 +137,23 @@ exports.getAllTeacherProfileController = async (req, res, next) => {
 };
 
 exports.getAllStudentProfileController = async (req, res, next) => {
+	const ranges = req.query?.range?.split("-"); // 100-300 <- range
 	try {
+		const currentUser = loggedInUserRole(req, res, next);
+
 		const profiles = await Profile.find({ userId: { $regex: /-/, $options: "g" } }).sort(
 			"userId"
 		);
 
-		res.status(200).json({ success: true, profiles });
+		if (currentUser === "admin") return res.status(200).json({ success: true, profiles });
+
+		const filteredProfiles = profiles.filter((profile) => {
+			let advisingRanges = Number(profile.userId?.split("-")[2]); // 201-35-3001 <- id
+
+			return Number(ranges[0]) <= advisingRanges && Number(ranges[1] >= advisingRanges);
+		});
+
+		res.status(200).json({ success: true, profiles: filteredProfiles });
 	} catch (err) {
 		next(err);
 	}
@@ -171,12 +183,9 @@ exports.assignAdvisingRangeToProfile = async (req, res, next) => {
 					message: "Set advising range successfully",
 					success: true,
 					updatedProfile,
-					
 				});
 			}
-			return res
-				.status(200)
-				.json({ success: false, message: "Range not updated" });
+			return res.status(200).json({ success: false, message: "Range not updated" });
 		}
 
 		return res

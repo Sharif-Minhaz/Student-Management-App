@@ -115,7 +115,7 @@ const Lists = ({ setOpenDrawer }) => {
 						path="/registered-courses"
 					/>
 				)}
-				{role === "teacher" && (
+				{(role === "teacher" || role === "admin") && (
 					<SingleListItem
 						setOpenDrawer={setOpenDrawer}
 						text="Registered Students"

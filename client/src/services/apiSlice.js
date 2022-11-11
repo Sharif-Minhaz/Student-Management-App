@@ -158,8 +158,8 @@ export const api = createApi({
 			providesTags: ["allTeacherProfile"],
 		}),
 		allStudentProfile: builder.query({
-			query: () => ({
-				url: "profile/view/students",
+			query: (range) => ({
+				url: `profile/view/students?range=${range}`,
 				method: "GET",
 				headers: {
 					"Content-type": "application/json; charset=UTF-8",
