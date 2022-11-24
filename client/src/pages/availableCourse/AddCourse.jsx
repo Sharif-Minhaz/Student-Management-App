@@ -12,9 +12,8 @@ import {
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import { Add, Close } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAddCourseMutation } from "../../services/apiSlice";
-import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -144,7 +143,7 @@ const AddCourse = ({ handleOpenAddBoxes }) => {
 										variant="outlined"
 										startIcon={<Add />}
 										type="submit"
-										sx={{mr: "5px"}}
+										sx={{ mr: "5px" }}
 									>
 										ADD
 									</Button>

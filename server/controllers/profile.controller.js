@@ -137,8 +137,6 @@ exports.getAllTeacherProfileController = async (req, res, next) => {
 		if (currentUser === "student") {
 			const filteredProfiles = profiles.filter((profile) => {
 				let advising = profile.advisingRange?.split("-"); // 201-35-3001 <- id
-				console.log(advising, range);
-				console.log(range <= Number(advising[1]) && range >= Number(advising[0]));
 				return range <= Number(advising[1]) && range >= Number(advising[0]);
 			});
 			console.log(filteredProfiles);

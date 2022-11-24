@@ -68,8 +68,9 @@ exports.updateCourseController = async (req, res, next) => {
 	}
 };
 
+//TODO: handling this controller ----->
 exports.assignCourseToStudentController = async (req, res, next) => {
-	const { userId, id } = req.params;
+	const { userId, id } = req.body;
 	try {
 		const { courseCode, courseName, credit, courseTeacher, maxNumber } =
 			await AllCourses.findById(id);

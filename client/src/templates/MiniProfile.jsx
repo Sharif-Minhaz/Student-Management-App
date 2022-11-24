@@ -26,12 +26,14 @@ import { ExpandMore } from "@mui/icons-material";
 import {
 	useAssignAdvisingRangeMutation,
 	useDeleteStudentProfileMutation,
+	useGetAllCoursesQuery,
 } from "../services/apiSlice";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "./loading/Loading";
 
 const MiniProfile = ({ profile, role = "teacher", advisingRanges = [] }) => {
+	const allCoursesInfo = useGetAllCoursesQuery();
 	const [deleteProfile, responseInfo] = useDeleteStudentProfileMutation();
 	const [assignAdvisingRange, assigningInfo] = useAssignAdvisingRangeMutation();
 	const [range, setRange] = useState(profile?.advisingRange || "");
@@ -199,6 +201,27 @@ const MiniProfile = ({ profile, role = "teacher", advisingRanges = [] }) => {
 								</TableBody>
 							</Table>
 						</TableContainer>
+						<Divider textAlign="left">
+							<Chip label="Assign Courses" />
+						</Divider>
+						<FormControl fullWidth size="small">
+							<InputLabel id="courses-available">Advising range</InputLabel>
+							<Select
+								labelId="courses-available"
+								id="all-courses"
+								name="assignedCourse"
+								value={range}
+								label="Advising range"
+								onChange={handleOnChange}
+								disabled={assigningInfo.isLoading}
+							>
+								{allCoursesInfo.data?.allCourses.map((course) => (
+									<MenuItem value={course._id} selected>
+										{`${course.courseCode} ${course.courseName}`}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 					</>
 				)}
 				{role === "admin" && (
